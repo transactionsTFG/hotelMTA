@@ -49,7 +49,6 @@ public class BookingBO implements Serializable {
 		this.setAgencyName(bookingDTO.getAgencyName());
 	}
 
-
 	public int getId() {
 		return id;
 	}

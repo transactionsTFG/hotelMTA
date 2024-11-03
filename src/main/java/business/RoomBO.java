@@ -1,9 +1,13 @@
 package business;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 import java.io.Serializable;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 import javax.persistence.NamedQueries;
 import java.util.List;
 import javax.persistence.ManyToMany;
@@ -19,10 +23,10 @@ import javax.persistence.ManyToMany;
 public class RoomBO implements Serializable {
 	private static final long serialVersionUID = 0;
 
-	public RoomBO() {}
-
-	@Id
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Version
+	private int version;
 	private int number;
 	private boolean occupied;
 	private boolean singleBed;
@@ -30,6 +34,16 @@ public class RoomBO implements Serializable {
 	@ManyToMany(mappedBy = "roomBO")
 	private List<BookingBO> bookingBO;
 	private int peopleNumber;
+	
+	public RoomBO() {}
+	public RoomBO(RoomDTO roomDTO) {
+		this.setId(roomDTO.getId());
+		this.setNumber(roomDTO.getNumber());
+		this.setOccupied(roomDTO.isOccupied());
+		this.setSingleBed(roomDTO.isSingleBed());
+		this.setActive(roomDTO.isActive());
+		this.setPeopleNumber(roomDTO.getPeopleNumber());
+	}
 
 	public int getId() {
 		return id;
@@ -74,6 +88,8 @@ public class RoomBO implements Serializable {
 		this.peopleNumber = peopleNumber;
 	}
 	
-	
+	public RoomDTO toTransfer() {
+		return new RoomDTO(id, number, occupied, singleBed, active, peopleNumber);
+	}
 	
 }

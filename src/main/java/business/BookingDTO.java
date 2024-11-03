@@ -74,6 +74,4 @@ public class BookingDTO {
 		this.customerId = customerId;
 	}
 	
-	
-
 }
