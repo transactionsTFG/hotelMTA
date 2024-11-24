@@ -144,5 +144,56 @@ public class HotelASImp implements HotelAS {
 	private boolean isValid(BookingDTO booking) {
 		return true;
 	}
+	
+	private String getEndDate(String date, int numberOfNights) {
+		// dd-mm-yyyy
+		String daystr = date.substring(0, 2);
+		String monthstr = date.substring(3, 5);
+		String yearstr = date.substring(6);
+		int day = Integer.parseInt(daystr);
+		int month = Integer.parseInt(monthstr);
+		int year = Integer.parseInt(yearstr);
+		
+		int dayEnd = day + numberOfNights;
+		int monthEnd = month;
+		int yearEnd = year;
+		
+		int daysInMonth = getDays(month);
+		if (dayEnd > daysInMonth) {
+			dayEnd -= daysInMonth;
+			monthEnd++;
+		}
+		
+		if (monthEnd > 12) {
+			monthEnd -= 12;
+			yearEnd++;
+		}
+		
+		daystr = (dayEnd < 10 ? "0" : "") + dayEnd;
+		monthstr = (monthEnd < 10 ? "0" : "") + monthEnd;
+		yearstr = "" + yearEnd;
+		
+		return daystr + "-" + monthstr + "-" + yearstr;
+	}
+	
+	private int getDays(int month) {
+		switch(month) {
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12:
+				return 31;
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				return 30;
+			default:
+			return 28;
+		}
+	}
 
 }
