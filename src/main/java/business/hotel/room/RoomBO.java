@@ -1,4 +1,4 @@
-package business;
+package business.hotel.room;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +8,9 @@ import java.io.Serializable;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
+
+import business.hotel.booking.BookingBO;
+
 import javax.persistence.NamedQueries;
 import java.util.List;
 import javax.persistence.ManyToMany;

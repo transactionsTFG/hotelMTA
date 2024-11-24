@@ -1,4 +1,4 @@
-package business;
+package business.hotel.customer;
 
 
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.Version;
+
+import business.hotel.booking.BookingBO;
 
 import java.util.List;
 import javax.persistence.OneToMany;
@@ -34,6 +36,7 @@ public class CustomerBO implements Serializable {
 	private String email;
 	private String phone;
 	private String dni;
+	private boolean active;
 	@OneToMany(mappedBy = "customerBO")
 	private List<BookingBO> bookingBO;
 
@@ -76,6 +79,12 @@ public class CustomerBO implements Serializable {
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 	public List<BookingBO> getBookingBO() {
 		return bookingBO;
 	}
@@ -84,7 +93,7 @@ public class CustomerBO implements Serializable {
 	}
 	
 	public CustomerDTO toTransfer() {
-		return new CustomerDTO(id, name, email, phone, dni);
+		return new CustomerDTO(id, name, email, phone, dni, active);
 	}
 	
 }

@@ -1,4 +1,4 @@
-package business;
+package business.hotel.booking;
 
 
 import javax.persistence.Entity;
@@ -9,6 +9,10 @@ import java.io.Serializable;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
+
+import business.hotel.customer.CustomerBO;
+import business.hotel.room.RoomBO;
+
 import javax.persistence.NamedQueries;
 import javax.persistence.ManyToOne;
 import java.util.List;
@@ -34,6 +38,7 @@ public class BookingBO implements Serializable {
 	private int numberOfNights;
 	private boolean withBreakfast;
 	private String agencyName;
+	private boolean active;
 	@ManyToOne
 	private CustomerBO customerBO;
 	@ManyToMany
@@ -85,6 +90,12 @@ public class BookingBO implements Serializable {
 	public void setAgencyName(String agencyName) {
 		this.agencyName = agencyName;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 	public CustomerBO getCustomerBO() {
 		return customerBO;
 	}
@@ -105,7 +116,7 @@ public class BookingBO implements Serializable {
 	}
 	
 	public BookingDTO toTransfer() {
-		return new BookingDTO(id, date, numberOfNights, withBreakfast, agencyName, peopleNumber, customerBO.getId());
+		return new BookingDTO(id, date, numberOfNights, withBreakfast, agencyName, peopleNumber, customerBO.getId(), active);
 	}
 
 }

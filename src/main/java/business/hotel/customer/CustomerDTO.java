@@ -1,4 +1,4 @@
-package business;
+package business.hotel.customer;
 
 public class CustomerDTO {
 	
@@ -7,14 +7,16 @@ public class CustomerDTO {
 	private String email;
 	private String phone;
 	private String dni;
+	private boolean active;
 	
-	public CustomerDTO(int id, String name, String email, String phone, String dni) {
+	public CustomerDTO(int id, String name, String email, String phone, String dni, boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
 		this.dni = dni;
+		this.active = active;
 	}
 	public CustomerDTO(String name, String email, String phone, String dni) {
 		super();
@@ -22,6 +24,7 @@ public class CustomerDTO {
 		this.email = email;
 		this.phone = phone;
 		this.dni = dni;
+		this.active = true;
 	}
 	public int getId() {
 		return id;
@@ -52,6 +55,12 @@ public class CustomerDTO {
 	}
 	public void setDni(String dni) {
 		this.dni = dni;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package business;
+package business.hotel.booking;
 
 public class BookingDTO {
 	
@@ -9,9 +9,10 @@ public class BookingDTO {
 	private String agencyName;
 	private int peopleNumber;
 	private int customerId;
+	private boolean active;
 	
 	public BookingDTO(int id, String date, int numberOfNights, boolean withBreakfast, String agencyName,
-			int peopleNumber, int customerId) {
+			int peopleNumber, int customerId, boolean active) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -20,6 +21,7 @@ public class BookingDTO {
 		this.agencyName = agencyName;
 		this.peopleNumber = peopleNumber;
 		this.customerId = customerId;
+		this.active = active;
 	}
 	public BookingDTO(String date, int numberOfNights, boolean withBreakfast, String agencyName,
 			int peopleNumber, int customerId) {
@@ -73,5 +75,12 @@ public class BookingDTO {
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	
 }

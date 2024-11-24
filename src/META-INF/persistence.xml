@@ -5,22 +5,13 @@
              version="2.1">
              <!-- TODO: cambiar transaction-type -->
 	<persistence-unit name="hotelMTA" transaction-type="RESOURCE_LOCAL">
-	<class>negocio.curso.ONCurso</class>
-	<class>negocio.curso.ONCursoOnline</class>
-	<class>negocio.curso.ONCursoPresencial</class>
-	<class>negocio.empleado.ONEmpleado</class>
-	<class>negocio.empleado.EAdministrador</class>
-	<class>negocio.empleado.ETecnico</class>
-	<class>negocio.empleado_curso.ONEmpleadoCurso</class>
-	<class>negocio.empleado_curso.ONEmpleadoCursoEmbed</class>
-	<class>negocio.material.ONMaterial</class>
-	<class>negocio.oficina.ONOficina</class>
-	<class>negocio.proyecto.ONProyecto</class>
-	<class>negocio.tarea.ONTarea</class>
+	<class>business.hotel.booking.BookingBO</class>
+	<class>business.hotel.customer.CustomerBO</class>
+	<class>business.hotel.room.RoomBO</class>
 	<properties>
 		<!-- TODO: cambiar nombre BD y puerto -->
 		  <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />	 
-	      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/royalmarketjpa"/>
+	      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hotelMTA"/>
 	      <property name="javax.persistence.jdbc.user" value="root"/>
 	      <property name="javax.persistence.jdbc.password" value=""/>
 	      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

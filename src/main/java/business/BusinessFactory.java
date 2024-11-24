@@ -1,5 +1,7 @@
 package business;
 
+import business.hotel.HotelAS;
+
 public abstract class BusinessFactory {
 	
 	private static BusinessFactory instance;

@@ -1,4 +1,4 @@
-package business;
+package business.hotel.room;
 
 public class RoomDTO {
 	
