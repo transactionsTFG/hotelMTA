@@ -196,12 +196,14 @@ public class HotelASImp implements HotelAS {
 				BookingDTO booking = bookingBO.toTransfer();
 				if (booking.isActive()) {
 					bookingBO.setActive(false);
-					em.persist(bookingBO);
-					res = bookingBO.getId();
+					for (RoomBO r : bookingBO.getRoomBO()) {
+						r.setActive(false);
+					}
 					et.commit();
+					res = bookingBO.getId();
 				} else {
-					res = NON_ACTIVE_BOOKING;
 					et.rollback();
+					res = NON_ACTIVE_BOOKING;
 				}
 			}
 			
