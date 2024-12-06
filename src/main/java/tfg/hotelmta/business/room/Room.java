@@ -34,7 +34,7 @@ public class Room implements Serializable {
     private boolean occupied;
     private boolean singleBed;
     private boolean active;
-    @ManyToMany(mappedBy = "roomBO")
+    @ManyToMany(mappedBy = "room")
     private List<Booking> booking;
     private int peopleNumber;
 
