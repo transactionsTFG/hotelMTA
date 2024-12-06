@@ -15,6 +15,7 @@ public abstract class BusinessFactory {
     }
 
     public abstract BookingAS createBookingAS();
+
     public abstract RoomAS createRoomAS();
 
 }

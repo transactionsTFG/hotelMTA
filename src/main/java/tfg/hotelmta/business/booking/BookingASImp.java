@@ -21,5 +21,5 @@ public class BookingASImp implements BookingAS {
     public BookingDTO readBooking(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }
