@@ -55,20 +55,33 @@ public class BookingASImp implements BookingAS {
             EntityTransaction et = em.getTransaction();
             et.begin();
             try {
+                Booking booking = em.find(Booking.class, bookingDTO.getId());
+                
+                if (booking == null) {
+                    res = -1;
+                    throw new Exception("Booking with id " + bookingDTO.getId() + " does not exist");
+                }
+                
                 Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
                 if (customer == null) {
                     res = -1;
-                    throw new Exception("Non existent customer");
+                    throw new Exception("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
                 }
 
                 if (!customer.isActive()) {
                     res = -1;
-                    throw new Exception("Non active customer");
+                    throw new Exception("Customer with id " + bookingDTO.getCustomerId() + " is not active");
                 }
+                
+                // Read rooms
 
-                Booking booking = new Booking(bookingDTO);
                 booking.setCustomer(customer);
-                em.persist(booking);
+                booking.setActive(true);
+                booking.setAgencyName(bookingDTO.getAgencyName());
+                booking.setDate(bookingDTO.getDate());
+                booking.setNumberOfNights(bookingDTO.getNumberOfNights());
+                booking.setPeopleNumber(bookingDTO.getPeopleNumber());
+                booking.setWithBreakfast(bookingDTO.isWithBreakfast());
                 et.commit();
                 res = booking.getId();
                 bookingDTO.setId(res);
