@@ -2,10 +2,12 @@ package tfg.hotelmta.soap;
 
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
+import java.util.List;
 import tfg.hotelmta.business.BusinessFactory;
 import tfg.hotelmta.business.booking.BookingAS;
 import tfg.hotelmta.business.booking.BookingDTO;
 import tfg.hotelmta.business.room.RoomAS;
+import tfg.hotelmta.business.room.RoomDTO;
 
 @WebService(serviceName = "HotelWS")
 public class HotelWS {
@@ -23,12 +25,12 @@ public class HotelWS {
     }
     
     @WebMethod(operationName = "makeBooking")
-    public void makeBooking(BookingDTO booking) {
-        this.bookingAS.createBooking(booking);
+    public void makeBooking(BookingDTO booking, List<RoomDTO> rooms) {
+        this.bookingAS.createBooking(booking, rooms);
     }
     @WebMethod(operationName = "modifyBooking")
-    public void modifyBooking(BookingDTO booking) {
-        this.bookingAS.updateBooking(booking);
+    public void modifyBooking(BookingDTO booking, List<RoomDTO> rooms) {
+        this.bookingAS.updateBooking(booking, rooms);
     }
     @WebMethod(operationName = "cancelBooking")
     public void cancelBooking(int bookingID) {
