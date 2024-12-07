@@ -6,7 +6,6 @@ import org.junit.Test;
 import tfg.hotelmta.business.BusinessFactory;
 
 public class RoomTests {
-    private static final int INF = 999999999;
     private RoomAS roomAS;
     
     @Before public void setUp() {
@@ -14,7 +13,7 @@ public class RoomTests {
     }
     
     @Test public void searchRoomOK() {
-        Assert.assertNotNull(roomAS.readRoom(INF));
+        Assert.assertNull(roomAS.readRoom(-1));
     }
     
     @Test public void searchRoomKO() {
