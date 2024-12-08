@@ -13,6 +13,9 @@ import java.util.List;
 import tfg.hotelmta.business.booking.Booking;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "tfg.hotelmta.business.room.getByRoomNumber", query = "SELECT r FROM Room r WHERE r.number = :number")
+})
 public class Room implements Serializable {
 
     private static final long serialVersionUID = 0;
