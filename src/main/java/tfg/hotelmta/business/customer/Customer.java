@@ -13,6 +13,9 @@ import java.util.List;
 import tfg.hotelmta.business.booking.Booking;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name ="tfg.hotelmta.business.customer.getByDni", query="SELECT c FROM Customer c WHERE c.dni = :dni")
+})
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 0;
