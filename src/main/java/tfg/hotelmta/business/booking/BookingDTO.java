@@ -33,6 +33,7 @@ public class BookingDTO {
         this.agencyName = agencyName;
         this.peopleNumber = peopleNumber;
         this.customerId = customerId;
+        this.active = true;
     }
 
     public int getId() {

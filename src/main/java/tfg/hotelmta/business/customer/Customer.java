@@ -42,6 +42,7 @@ public class Customer implements Serializable {
         this.setEmail(customerDTO.getEmail());
         this.setPhone(customerDTO.getPhone());
         this.setDni(customerDTO.getDni());
+        this.setActive(customerDTO.isActive());
     }
 
     public int getId() {

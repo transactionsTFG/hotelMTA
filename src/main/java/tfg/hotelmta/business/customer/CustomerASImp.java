@@ -31,7 +31,7 @@ public class CustomerASImp implements CustomerAS {
                 em.persist(customer);
                 t.commit();
                 res = customer.getId();
-                customer.setId(res);
+                customerDTO.setId(res);
             } else {
                 if (customer.isActive()) {
                     res = ErrorResponses.ACTIVE_CUSTOMER;

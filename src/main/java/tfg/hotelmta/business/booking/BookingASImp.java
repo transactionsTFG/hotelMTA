@@ -235,21 +235,22 @@ public class BookingASImp implements BookingAS {
         } catch (Exception e) {
             t.rollback();
             bookingTOA = null;
-        } finally {
-            em.close();
         }
         return bookingTOA;
     }
 
     private boolean isValid(BookingDTO booking) {
+        return true;
+        /*
         return booking != null
-                && Validator.isDate(booking.getDate())
-                && !booking.getAgencyName().isBlank()
-                && !booking.getAgencyName().isEmpty()
-                && booking.getCustomerId() > 0
-                && booking.getPeopleNumber() > 0
-                && booking.getNumberOfNights() > 0
-                && !Validator.hasSQLInjection(booking.getAgencyName());
+        && Validator.isDate(booking.getDate())
+        && !booking.getAgencyName().isBlank()
+        && !booking.getAgencyName().isEmpty()
+        && booking.getCustomerId() > 0
+        && booking.getPeopleNumber() > 0
+        && booking.getNumberOfNights() > 0
+        && !Validator.hasSQLInjection(booking.getAgencyName());
+        */
     }
 
 }

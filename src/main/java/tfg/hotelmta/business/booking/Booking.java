@@ -41,9 +41,11 @@ public class Booking implements Serializable {
     public Booking(BookingDTO bookingDTO) {
         this.setId(bookingDTO.getId());
         this.setDate(bookingDTO.getDate());
+        this.setPeopleNumber(bookingDTO.getPeopleNumber());
         this.setNumberOfNights(bookingDTO.getNumberOfNights());
         this.setWithBreakfast(bookingDTO.isWithBreakfast());
         this.setAgencyName(bookingDTO.getAgencyName());
+        this.setActive(bookingDTO.isActive());
     }
 
     public int getId() {

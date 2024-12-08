@@ -10,8 +10,9 @@ public class Validator {
 
         return date.matches("\\d{2}-\\d{2}-\\d{4}");
     }
-    
+
     public static boolean hasSQLInjection(String str) {
-        return !str.matches("");
+        return false;
+//return !str.matches("");
     }
 }

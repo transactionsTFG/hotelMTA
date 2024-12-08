@@ -19,13 +19,13 @@ public class CustomerDTO {
         this.active = active;
     }
 
-    public CustomerDTO(String name, String email, String phone, String dni) {
+    public CustomerDTO(String name, String email, String phone, String dni, boolean active) {
         super();
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.dni = dni;
-        this.active = true;
+        this.active = active;
     }
 
     public int getId() {
