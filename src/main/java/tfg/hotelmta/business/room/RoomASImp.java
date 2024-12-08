@@ -4,7 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
-import tfg.hotelmta.business.exception.ExceptionAS;
+import tfg.hotelmta.business.exception.ASException;
+import tfg.hotelmta.business.utils.ErrorResponses;
 import tfg.hotelmta.integration.transaction.Transaction;
 import tfg.hotelmta.integration.transaction.TransactionManager;
 
@@ -12,9 +13,9 @@ public class RoomASImp implements RoomAS {
 
     @Override
     public int createRoom(RoomDTO roomDTO) {
-        int res = -1;
+        int res = ErrorResponses.SYNTAX_ERROR;
         if (!this.isValid(roomDTO)) {
-            return -2;
+            return res;
         }
 
         Transaction t = TransactionManager.getInstance().newTransaccion();
@@ -34,17 +35,18 @@ public class RoomASImp implements RoomAS {
             } else {
                 room = resultList.getFirst();
                 if (room.isActive()) {
-                    res = -3;
-                    throw new ExceptionAS("Room is already active");
+                    res = ErrorResponses.ACTIVE_ROOM;
+                    throw new ASException("Room is already active");
+                } else {
+                    room.setActive(true);
+                    room.setNumber(roomDTO.getNumber());
+                    room.setOccupied(roomDTO.isOccupied());
+                    room.setPeopleNumber(roomDTO.getPeopleNumber());
+                    room.setSingleBed(roomDTO.isSingleBed());
+                    t.commit();
+                    res = ErrorResponses.NON_ACTIVE_ROOM;
+                    roomDTO.setId(room.getId());
                 }
-                room.setActive(true);
-                room.setNumber(roomDTO.getNumber());
-                room.setOccupied(roomDTO.isOccupied());
-                room.setPeopleNumber(roomDTO.getPeopleNumber());
-                room.setSingleBed(roomDTO.isSingleBed());
-                t.commit();
-                res = room.getId();
-                roomDTO.setId(res);
             }
         } catch (Exception e) {
             t.rollback();
@@ -61,7 +63,7 @@ public class RoomASImp implements RoomAS {
         try {
             Room room = em.find(Room.class, id, LockModeType.OPTIMISTIC);
             if (room == null) {
-                throw new ExceptionAS("Room with id " + id + " does not exist");
+                throw new ASException("Room with id " + id + " does not exist");
             }
             t.commit();
             roomDTO = room.toTransfer();
@@ -72,6 +74,6 @@ public class RoomASImp implements RoomAS {
     }
 
     private boolean isValid(RoomDTO room) {
-        return true;
+        return room.getNumber() > 0 && room.getPeopleNumber() > 0;
     }
 }

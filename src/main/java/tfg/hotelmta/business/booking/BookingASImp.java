@@ -7,7 +7,7 @@ import jakarta.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.List;
 import tfg.hotelmta.business.customer.Customer;
-import tfg.hotelmta.business.exception.ExceptionAS;
+import tfg.hotelmta.business.exception.ASException;
 import tfg.hotelmta.business.room.Room;
 import tfg.hotelmta.business.room.RoomDTO;
 import tfg.hotelmta.business.validators.Validator;
@@ -27,12 +27,12 @@ public class BookingASImp implements BookingAS {
                 Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
                 if (customer == null) {
                     res = -1;
-                    throw new ExceptionAS("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
+                    throw new ASException("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
                 }
 
                 if (!customer.isActive()) {
                     res = -1;
-                    throw new ExceptionAS("Customer with id " + customer.getId() + " is not available");
+                    throw new ASException("Customer with id " + customer.getId() + " is not available");
                 }
 
                 int i = 0;
@@ -53,7 +53,7 @@ public class BookingASImp implements BookingAS {
 
                 if (!roomsOK) {
                     res = -1;
-                    throw new ExceptionAS("At least one of the rooms does not exist or is not available");
+                    throw new ASException("At least one of the rooms does not exist or is not available");
                 }
 
                 Booking booking = new Booking(bookingDTO);
@@ -69,7 +69,7 @@ public class BookingASImp implements BookingAS {
                 bookingDTO.setId(res);
 
             } catch (Exception e) {
-                if (!(e instanceof ExceptionAS)) {
+                if (!(e instanceof ASException)) {
                     res = -1;
                 }
                 et.rollback();
@@ -93,18 +93,18 @@ public class BookingASImp implements BookingAS {
 
                 if (booking == null) {
                     res = -1;
-                    throw new ExceptionAS("Booking with id " + bookingDTO.getId() + " does not exist");
+                    throw new ASException("Booking with id " + bookingDTO.getId() + " does not exist");
                 }
 
                 Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
                 if (customer == null) {
                     res = -1;
-                    throw new ExceptionAS("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
+                    throw new ASException("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
                 }
 
                 if (!customer.isActive()) {
                     res = -1;
-                    throw new ExceptionAS("Customer with id " + customer.getId() + " is not available");
+                    throw new ASException("Customer with id " + customer.getId() + " is not available");
                 }
 
                 int i = 0;
@@ -125,7 +125,7 @@ public class BookingASImp implements BookingAS {
 
                 if (!roomsOK) {
                     res = -1;
-                    throw new ExceptionAS("At least one of the rooms does not exist or is not available");
+                    throw new ASException("At least one of the rooms does not exist or is not available");
                 }
 
                 booking.setDate(bookingDTO.getDate());
@@ -145,7 +145,7 @@ public class BookingASImp implements BookingAS {
                 res = booking.getId();
 
             } catch (Exception e) {
-                if (!(e instanceof ExceptionAS)) {
+                if (!(e instanceof ASException)) {
                     res = -1;
                 }
                 et.rollback();
@@ -168,24 +168,24 @@ public class BookingASImp implements BookingAS {
 
             if (booking == null) {
                 res = -1;
-                throw new ExceptionAS("Booking with id " + id + " does not exist");
+                throw new ASException("Booking with id " + id + " does not exist");
             }
 
             if (!booking.isActive()) {
                 res = -1;
-                throw new ExceptionAS("Booking with id " + id + " is not active");
+                throw new ASException("Booking with id " + id + " is not active");
             }
 
             Customer customer = booking.getCustomer();
 
             if (customer == null) {
                 res = -1;
-                throw new ExceptionAS("Customer with id " + booking.getCustomer().getId() + " does not exist");
+                throw new ASException("Customer with id " + booking.getCustomer().getId() + " does not exist");
             }
 
             if (!customer.isActive()) {
                 res = -1;
-                throw new ExceptionAS("Customer with id " + customer.getId() + " is not available");
+                throw new ASException("Customer with id " + customer.getId() + " is not available");
             }
 
             for (Room r : booking.getRoom()) {
@@ -198,7 +198,7 @@ public class BookingASImp implements BookingAS {
             res = id;
 
         } catch (Exception e) {
-            if (!(e instanceof ExceptionAS)) {
+            if (!(e instanceof ASException)) {
                 res = -1;
             }
             et.rollback();
@@ -220,19 +220,19 @@ public class BookingASImp implements BookingAS {
             Booking booking = em.find(Booking.class, id, LockModeType.OPTIMISTIC);
             if (booking == null) {
                 et.rollback();
-                throw new ExceptionAS("Booking with id " + id + " does not exist");
+                throw new ASException("Booking with id " + id + " does not exist");
             }
-            
+
             Customer customer = booking.getCustomer();
-            
+
             if (customer == null) {
-                throw new ExceptionAS("Customer with id " + booking.getCustomer().getId() + " does not exist");
+                throw new ASException("Customer with id " + booking.getCustomer().getId() + " does not exist");
             }
-            
+
             em.lock(customer, LockModeType.OPTIMISTIC);
-            
+
             List<RoomDTO> rooms = new ArrayList();
-            
+
             for (Room r : booking.getRoom()) {
                 em.lock(r, LockModeType.OPTIMISTIC);
                 rooms.add(r.toTransfer());
