@@ -1,8 +1,6 @@
 package tfg.hotelmta.business.booking;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,181 +8,179 @@ import tfg.hotelmta.business.customer.Customer;
 import tfg.hotelmta.business.exception.ASException;
 import tfg.hotelmta.business.room.Room;
 import tfg.hotelmta.business.room.RoomDTO;
+import tfg.hotelmta.business.utils.ErrorResponses;
 import tfg.hotelmta.business.validators.Validator;
-import tfg.hotelmta.integration.SingletonEntityManager;
+import tfg.hotelmta.integration.transaction.Transaction;
+import tfg.hotelmta.integration.transaction.TransactionManager;
 
 public class BookingASImp implements BookingAS {
 
     @Override
     public int createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
-        int res = -1;
-        if (this.isValid(bookingDTO)) {
-            EntityManagerFactory emf = SingletonEntityManager.getInstance();
-            EntityManager em = emf.createEntityManager();
-            EntityTransaction et = em.getTransaction();
-            et.begin();
-            try {
-                Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-                if (customer == null) {
-                    res = -1;
-                    throw new ASException("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
-                }
-
-                if (!customer.isActive()) {
-                    res = -1;
-                    throw new ASException("Customer with id " + customer.getId() + " is not available");
-                }
-
-                int i = 0;
-                boolean roomsOK = true;
-                while (i < rooms.size() && roomsOK) {
-                    RoomDTO roomDTO = rooms.get(i);
-                    Room room = em.find(Room.class, roomDTO.getId(), LockModeType.OPTIMISTIC);
-                    if (room == null) {
-                        res = -1;
-                        roomsOK = false;
-                    }
-                    if (roomsOK && !room.isActive()) {
-                        res = -1;
-                        roomsOK = false;
-                    }
-                    ++i;
-                }
-
-                if (!roomsOK) {
-                    res = -1;
-                    throw new ASException("At least one of the rooms does not exist or is not available");
-                }
-
-                Booking booking = new Booking(bookingDTO);
-                booking.setCustomer(customer);
-                List<Room> roomList = new ArrayList<>();
-                for (RoomDTO r : rooms) {
-                    roomList.add(new Room(r));
-                }
-                booking.setRoom(roomList);
-                em.persist(booking);
-                et.commit();
-                res = booking.getId();
-                bookingDTO.setId(res);
-
-            } catch (Exception e) {
-                if (!(e instanceof ASException)) {
-                    res = -1;
-                }
-                et.rollback();
-            } finally {
-                em.close();
-            }
+        int res = ErrorResponses.SYNTAX_ERROR;
+        if (!this.isValid(bookingDTO)) {
+            return res;
         }
+        Transaction t = TransactionManager.getInstance().newTransaccion();
+        t.start();
+        EntityManager em = (EntityManager) t.getResource();
+        try {
+
+            Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            if (customer == null) {
+                res = ErrorResponses.NON_EXISTENT_CUSTOMER;
+                throw new ASException("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
+            }
+
+            if (!customer.isActive()) {
+                res = ErrorResponses.NON_ACTIVE_CUSTOMER;
+                throw new ASException("Customer with id " + customer.getId() + " is not available");
+            }
+
+            int i = 0;
+            boolean roomsOK = true;
+            while (i < rooms.size() && roomsOK) {
+                RoomDTO roomDTO = rooms.get(i);
+                Room room = em.find(Room.class, roomDTO.getId(), LockModeType.OPTIMISTIC);
+                if (room == null) {
+                    res = ErrorResponses.NON_EXISTENT_ROOM;
+                    roomsOK = false;
+                } else {
+                    if (roomsOK && !room.isActive()) {
+                        res = ErrorResponses.NON_ACTIVE_ROOM;
+                        roomsOK = false;
+                    }
+                }
+                ++i;
+            }
+
+            if (!roomsOK) {
+                throw new ASException("At least one of the rooms does not exist or is not available");
+            }
+
+            Booking booking = new Booking(bookingDTO);
+            booking.setCustomer(customer);
+            List<Room> roomList = new ArrayList<>();
+            for (RoomDTO r : rooms) {
+                roomList.add(new Room(r));
+            }
+            booking.setRoom(roomList);
+            em.persist(booking);
+            t.commit();
+            res = booking.getId();
+            bookingDTO.setId(res);
+
+        } catch (Exception e) {
+            if (!(e instanceof ASException)) {
+                res = ErrorResponses.UNEXPECTED_ERROR;
+            }
+            t.rollback();
+        }
+
         return res;
     }
 
     @Override
     public int updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
-        int res = -1;
-        if (this.isValid(bookingDTO)) {
-            EntityManagerFactory emf = SingletonEntityManager.getInstance();
-            EntityManager em = emf.createEntityManager();
-            EntityTransaction et = em.getTransaction();
-            et.begin();
-            try {
-                Booking booking = em.find(Booking.class, bookingDTO.getId());
+        int res = ErrorResponses.SYNTAX_ERROR;
+        if (!this.isValid(bookingDTO)) {
+            return res;
+        }
+        Transaction t = TransactionManager.getInstance().newTransaccion();
+        t.start();
+        EntityManager em = (EntityManager) t.getResource();
+        try {
+            Booking booking = em.find(Booking.class, bookingDTO.getId());
 
-                if (booking == null) {
-                    res = -1;
-                    throw new ASException("Booking with id " + bookingDTO.getId() + " does not exist");
-                }
-
-                Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-                if (customer == null) {
-                    res = -1;
-                    throw new ASException("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
-                }
-
-                if (!customer.isActive()) {
-                    res = -1;
-                    throw new ASException("Customer with id " + customer.getId() + " is not available");
-                }
-
-                int i = 0;
-                boolean roomsOK = true;
-                while (i < rooms.size() && roomsOK) {
-                    RoomDTO roomDTO = rooms.get(i);
-                    Room room = em.find(Room.class, roomDTO.getId(), LockModeType.OPTIMISTIC);
-                    if (room == null) {
-                        res = -1;
-                        roomsOK = false;
-                    }
-                    if (roomsOK && !room.isActive()) {
-                        res = -1;
-                        roomsOK = false;
-                    }
-                    ++i;
-                }
-
-                if (!roomsOK) {
-                    res = -1;
-                    throw new ASException("At least one of the rooms does not exist or is not available");
-                }
-
-                booking.setDate(bookingDTO.getDate());
-                booking.setNumberOfNights(bookingDTO.getNumberOfNights());
-                booking.setWithBreakfast(bookingDTO.isWithBreakfast());
-                booking.setAgencyName(bookingDTO.getAgencyName());
-                booking.setActive(true);
-                booking.setCustomer(customer);
-                List<Room> roomList = new ArrayList<>();
-                for (RoomDTO r : rooms) {
-                    roomList.add(new Room(r));
-                }
-                booking.setRoom(roomList);
-                booking.setPeopleNumber(bookingDTO.getPeopleNumber());
-
-                et.commit();
-                res = booking.getId();
-
-            } catch (Exception e) {
-                if (!(e instanceof ASException)) {
-                    res = -1;
-                }
-                et.rollback();
-            } finally {
-                em.close();
+            if (booking == null) {
+                res = ErrorResponses.NON_EXISTENT_BOOKING;
+                throw new ASException("Booking with id " + bookingDTO.getId() + " does not exist");
             }
+
+            Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            if (customer == null) {
+                res = ErrorResponses.NON_EXISTENT_CUSTOMER;
+                throw new ASException("Customer with id " + bookingDTO.getCustomerId() + " does not exist");
+            }
+
+            if (!customer.isActive()) {
+                res = ErrorResponses.NON_ACTIVE_CUSTOMER;
+                throw new ASException("Customer with id " + customer.getId() + " is not available");
+            }
+
+            int i = 0;
+            boolean roomsOK = true;
+            while (i < rooms.size() && roomsOK) {
+                RoomDTO roomDTO = rooms.get(i);
+                Room room = em.find(Room.class, roomDTO.getId(), LockModeType.OPTIMISTIC);
+                if (room == null) {
+                    res = ErrorResponses.NON_EXISTENT_ROOM;
+                    roomsOK = false;
+                } else {
+                    if (roomsOK && !room.isActive()) {
+                        res = ErrorResponses.NON_ACTIVE_ROOM;
+                        roomsOK = false;
+                    }
+                }
+                ++i;
+            }
+
+            if (!roomsOK) {
+                throw new ASException("At least one of the rooms does not exist or is not available");
+            }
+
+            booking.setDate(bookingDTO.getDate());
+            booking.setNumberOfNights(bookingDTO.getNumberOfNights());
+            booking.setWithBreakfast(bookingDTO.isWithBreakfast());
+            booking.setAgencyName(bookingDTO.getAgencyName());
+            booking.setActive(true);
+            booking.setCustomer(customer);
+            List<Room> roomList = new ArrayList<>();
+            for (RoomDTO r : rooms) {
+                roomList.add(new Room(r));
+            }
+            booking.setRoom(roomList);
+            booking.setPeopleNumber(bookingDTO.getPeopleNumber());
+
+            t.commit();
+            res = booking.getId();
+
+        } catch (Exception e) {
+            if (!(e instanceof ASException)) {
+                res = ErrorResponses.UNEXPECTED_ERROR;
+            }
+            t.rollback();
         }
         return res;
     }
 
     @Override
     public int deleteBooking(int id) {
-        int res = -1;
-        EntityManagerFactory emf = SingletonEntityManager.getInstance();
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction et = em.getTransaction();
-        et.begin();
+        int res = ErrorResponses.NON_EXISTENT_BOOKING;
+        Transaction t = TransactionManager.getInstance().newTransaccion();
+        t.start();
+        EntityManager em = (EntityManager) t.getResource();
         try {
             Booking booking = em.find(Booking.class, id);
 
             if (booking == null) {
-                res = -1;
                 throw new ASException("Booking with id " + id + " does not exist");
             }
 
             if (!booking.isActive()) {
-                res = -1;
+                res = ErrorResponses.NON_ACTIVE_BOOKING;
                 throw new ASException("Booking with id " + id + " is not active");
             }
 
             Customer customer = booking.getCustomer();
 
             if (customer == null) {
-                res = -1;
+                res = ErrorResponses.NON_EXISTENT_CUSTOMER;
                 throw new ASException("Customer with id " + booking.getCustomer().getId() + " does not exist");
             }
 
             if (!customer.isActive()) {
-                res = -1;
+                res = ErrorResponses.NON_ACTIVE_CUSTOMER;
                 throw new ASException("Customer with id " + customer.getId() + " is not available");
             }
 
@@ -194,16 +190,14 @@ public class BookingASImp implements BookingAS {
 
             booking.setActive(false);
 
-            et.commit();
+            t.commit();
             res = id;
 
         } catch (Exception e) {
             if (!(e instanceof ASException)) {
-                res = -1;
+                res = ErrorResponses.UNEXPECTED_ERROR;
             }
-            et.rollback();
-        } finally {
-            em.close();
+            t.rollback();
         }
 
         return res;
@@ -212,14 +206,12 @@ public class BookingASImp implements BookingAS {
     @Override
     public BookingTOA readBooking(int id) {
         BookingTOA bookingTOA = null;
-        EntityManagerFactory emf = SingletonEntityManager.getInstance();
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction et = em.getTransaction();
-        et.begin();
+        Transaction t = TransactionManager.getInstance().newTransaccion();
+        t.start();
+        EntityManager em = (EntityManager) t.getResource();
         try {
             Booking booking = em.find(Booking.class, id, LockModeType.OPTIMISTIC);
             if (booking == null) {
-                et.rollback();
                 throw new ASException("Booking with id " + id + " does not exist");
             }
 
@@ -238,10 +230,10 @@ public class BookingASImp implements BookingAS {
                 rooms.add(r.toTransfer());
             }
             bookingTOA = new BookingTOA(booking.toTransfer(), customer.toTransfer(), rooms);
-            et.commit();
+            t.commit();
 
         } catch (Exception e) {
-            et.rollback();
+            t.rollback();
             bookingTOA = null;
         } finally {
             em.close();
