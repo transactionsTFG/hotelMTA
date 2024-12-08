@@ -15,15 +15,6 @@ import tfg.hotelmta.business.customer.Customer;
 import tfg.hotelmta.business.room.Room;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "BookingBO.findByid", query = "select obj from BookingBO obj where :id = obj.id "),
-    @NamedQuery(name = "BookingBO.findBydate", query = "select obj from BookingBO obj where :date = obj.date "),
-    @NamedQuery(name = "BookingBO.findBynumberOfNights", query = "select obj from BookingBO obj where :numberOfNights = obj.numberOfNights "),
-    @NamedQuery(name = "BookingBO.findBywithBreakfast", query = "select obj from BookingBO obj where :withBreakfast = obj.withBreakfast "),
-    @NamedQuery(name = "BookingBO.findByagencyName", query = "select obj from BookingBO obj where :agencyName = obj.agencyName "),
-    @NamedQuery(name = "BookingBO.findBycustomerBO", query = "select obj from BookingBO obj where :customerBO = obj.customerBO "),
-    @NamedQuery(name = "BookingBO.findByroomBO", query = "select obj from BookingBO obj where :roomBO MEMBER OF obj.roomBO "),
-    @NamedQuery(name = "BookingBO.findBypeopleNumber", query = "select obj from BookingBO obj where :peopleNumber = obj.peopleNumber ")})
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 0;

@@ -13,10 +13,11 @@ public class RoomTests {
     }
     
     @Test public void searchRoomOK() {
-        Assert.assertNull(roomAS.readRoom(-1));
+        Assert.assertTrue(false);
     }
     
     @Test public void searchRoomKO() {
-        
+        Assert.assertNull(roomAS.readRoom(-1));
     }
+    
 }

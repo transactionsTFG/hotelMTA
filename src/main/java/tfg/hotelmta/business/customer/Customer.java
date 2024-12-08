@@ -13,15 +13,6 @@ import java.util.List;
 import tfg.hotelmta.business.booking.Booking;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "CustomerBO.findByid", query = "select obj from CustomerBO obj where :id = obj.id "),
-    @NamedQuery(name = "CustomerBO.findByname", query = "select obj from CustomerBO obj where :name = obj.name "),
-    @NamedQuery(name = "CustomerBO.findByemail", query = "select obj from CustomerBO obj where :email = obj.email "),
-    @NamedQuery(name = "CustomerBO.findByphone", query = "select obj from CustomerBO obj where :phone = obj.phone "),
-    @NamedQuery(name = "CustomerBO.findBydni", query = "select obj from CustomerBO obj where :dni = obj.dni "),
-    @NamedQuery(name = "CustomerBO.findByflightInstanceBO", query = "select obj from CustomerBO obj where :flightInstanceBO = obj.flightInstanceBO "),
-    @NamedQuery(name = "CustomerBO.findByreservationBO", query = "select obj from CustomerBO obj where :reservationBO MEMBER OF obj.reservationBO "),
-    @NamedQuery(name = "CustomerBO.findBybookingBO", query = "select obj from CustomerBO obj where :bookingBO MEMBER OF obj.bookingBO ")})
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 0;
