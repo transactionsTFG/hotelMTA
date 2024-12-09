@@ -5,10 +5,11 @@ import tfg.hotelmta.business.customer.CustomerDTO;
 import tfg.hotelmta.business.room.RoomDTO;
 
 public class BookingTOA {
+
     private final BookingDTO booking;
     private final CustomerDTO customer;
     private final List<RoomDTO> rooms;
-    
+
     public BookingTOA(BookingDTO booking, CustomerDTO customer, List<RoomDTO> rooms) {
         this.booking = booking;
         this.customer = customer;
@@ -26,5 +27,5 @@ public class BookingTOA {
     public List<RoomDTO> getRooms() {
         return rooms;
     }
-    
+
 }

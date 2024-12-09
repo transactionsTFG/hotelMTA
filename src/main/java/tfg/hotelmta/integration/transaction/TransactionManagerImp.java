@@ -4,12 +4,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class TransactionManagerImp extends TransactionManager {
-    
+
     private ConcurrentMap<Thread, Transaction> transactions;
 
     public TransactionManagerImp() {
-		this.transactions = new ConcurrentHashMap<>();
-	}
+        this.transactions = new ConcurrentHashMap<>();
+    }
 
     @Override
     public Transaction newTransaccion() {
@@ -23,7 +23,7 @@ public class TransactionManagerImp extends TransactionManager {
 
     @Override
     public Transaction getTransaccion() {
-        return this.transactions.get(Thread.currentThread());    
+        return this.transactions.get(Thread.currentThread());
     }
 
     @Override

@@ -84,18 +84,20 @@ public class CustomerASImp implements CustomerAS {
             if (customer == null) {
                 throw new ASException("Non existent customer");
             }
-            
+
             if (!customer.isActive()) {
                 res = ErrorResponses.NON_ACTIVE_CUSTOMER;
                 throw new ASException("Non active customer");
             }
-            
+
             customer.setActive(false);
             t.commit();
             res = id;
-            
+
         } catch (Exception e) {
-            if (!(e instanceof ASException)) {res = ErrorResponses.UNEXPECTED_ERROR;}
+            if (!(e instanceof ASException)) {
+                res = ErrorResponses.UNEXPECTED_ERROR;
+            }
             t.rollback();
         }
         return res;

@@ -250,7 +250,7 @@ public class BookingASImp implements BookingAS {
         && booking.getPeopleNumber() > 0
         && booking.getNumberOfNights() > 0
         && !Validator.hasSQLInjection(booking.getAgencyName());
-        */
+         */
     }
 
 }

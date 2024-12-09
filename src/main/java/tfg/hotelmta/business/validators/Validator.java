@@ -10,14 +10,14 @@ public class Validator {
 
         return date.matches("\\d{2}-\\d{2}-\\d{4}");
     }
-    
+
     public static boolean isEmail(String email) {
         if (email.isBlank() || email.isEmpty()) {
             return false;
         }
         return email.matches("");
     }
-    
+
     public static boolean isPhone(String phone) {
         if (phone.isBlank() || phone.isEmpty()) {
             return false;
@@ -31,7 +31,7 @@ public class Validator {
         }
         return dni.matches("[A-Z]{8}\\d");
     }
-    
+
     public static boolean hasSQLInjection(String str) {
         return false;
 //return !str.matches("");
