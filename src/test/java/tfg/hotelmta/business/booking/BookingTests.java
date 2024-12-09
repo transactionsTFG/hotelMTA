@@ -70,7 +70,89 @@ public class BookingTests {
         Assert.assertEquals(ErrorResponses.NON_ACTIVE_CUSTOMER, bookingAS.createBooking(booking, rooms));
     }
 
-    // Update is like create but with an extra possible response
+    @Test
+    public void createBookingKONonExistentRoom() {
+        customer = new CustomerDTO(name, email, phone, dni, true);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        rooms = new ArrayList<>();
+        room = new RoomDTO(-1, number, occupied, singleBed, active, peopleNumber);
+        rooms.add(room);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertEquals(ErrorResponses.NON_EXISTENT_ROOM, bookingAS.createBooking(booking, rooms));
+    }
+
+    @Test
+    public void createBookingKONonActiveRoom() {
+        customer = new CustomerDTO(name, email, phone, dni, true);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        rooms = new ArrayList<>();
+        room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
+        Assert.assertTrue(roomAS.createRoom(room) > 0);
+        Assert.assertTrue(roomAS.deleteRoom(room.getId()) > 0);
+        rooms.add(room);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertEquals(ErrorResponses.NON_ACTIVE_ROOM, bookingAS.createBooking(booking, rooms));
+    }
+
+    // Update is like create but with an extra possible response: non_existent_booking
+    @Test
+    public void updateBookingOK() {
+        customer = new CustomerDTO(name, email, phone, dni, active);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertTrue(bookingAS.createBooking(booking, rooms) > 0);
+        Assert.assertTrue(bookingAS.updateBooking(booking, rooms) > 0);
+    }
+
+    @Test
+    public void updateBookingKONonExistentBooking() {
+        booking = new BookingDTO(-1, date, numberOfNights, withBreakfast, agencyName, peopleNumber, number, active);
+        Assert.assertEquals(ErrorResponses.NON_EXISTENT_BOOKING, bookingAS.updateBooking(booking, rooms));
+    }
+
+    @Test
+    public void updateBookingKONonExistentCustomer() {
+        customer = new CustomerDTO(name, email, phone, dni, active);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertTrue(bookingAS.createBooking(booking, rooms) > 0);
+        booking.setCustomerId(-1);
+        Assert.assertEquals(ErrorResponses.NON_EXISTENT_CUSTOMER, bookingAS.updateBooking(booking, rooms));
+    }
+
+    @Test
+    public void updateBookingKONonActiveCustomer() {
+        customer = new CustomerDTO(name, email, phone, dni, active);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertTrue(bookingAS.createBooking(booking, rooms) > 0);
+        Assert.assertTrue(customerAS.deleteCustomer(customer.getId()) > 0);
+        Assert.assertEquals(ErrorResponses.NON_ACTIVE_CUSTOMER, bookingAS.updateBooking(booking, rooms));
+    }
+
+    @Test
+    public void updateBookingKONonExistentRoom() {
+        customer = new CustomerDTO(name, email, phone, dni, active);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertTrue(bookingAS.createBooking(booking, rooms) > 0);
+        rooms.add(new RoomDTO(-1, number, false, false, false, 1));
+        Assert.assertEquals(ErrorResponses.NON_EXISTENT_ROOM, bookingAS.updateBooking(booking, rooms));
+    }
+
+    @Test
+    public void updateBookingKONonActiveRoom() {
+        customer = new CustomerDTO(name, email, phone, dni, active);
+        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        booking = new BookingDTO(date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId());
+        Assert.assertTrue(bookingAS.createBooking(booking, rooms) > 0);
+        room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
+        Assert.assertTrue(roomAS.createRoom(room) > 0);
+        Assert.assertTrue(roomAS.deleteRoom(room.getId()) > 0);
+        rooms.add(room);
+        Assert.assertEquals(ErrorResponses.NON_ACTIVE_ROOM, bookingAS.updateBooking(booking, rooms));
+    }
+
     @Test
     public void deleteBookingOK() {
         customer = new CustomerDTO(name, email, phone, dni, true);
@@ -81,10 +163,11 @@ public class BookingTests {
         Assert.assertTrue(bookingAS.deleteBooking(booking.getId()) > 0);
     }
 
-    @Test public void deleteBookingKONonExistentBooking() {
+    @Test
+    public void deleteBookingKONonExistentBooking() {
         Assert.assertEquals(ErrorResponses.NON_EXISTENT_BOOKING, bookingAS.deleteBooking(-1));
     }
-    
+
     @Test
     public void deleteBookingKONonActiveBooking() {
         customer = new CustomerDTO(name, email, phone, dni, true);
@@ -95,9 +178,11 @@ public class BookingTests {
         Assert.assertTrue(bookingAS.deleteBooking(booking.getId()) > 0);
         Assert.assertEquals(ErrorResponses.NON_ACTIVE_BOOKING, bookingAS.deleteBooking(booking.getId()));
     }
-    
-    @Test public void readBookingOK() {
-                room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
+
+    // NOTE: Non existent/active customer doesn't need to be tested
+    @Test
+    public void readBookingOK() {
+        room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
         int roomRes = roomAS.createRoom(room);
         Assert.assertTrue("Error response: " + roomRes, roomRes > 0 && room.getId() > 0);
         rooms.add(room);
@@ -109,8 +194,9 @@ public class BookingTests {
         Assert.assertTrue("Error response: " + res, res > 0);
         Assert.assertNotNull(bookingAS.readBooking(booking.getId()));
     }
-    
-    @Test public void readBookingKO() {
+
+    @Test
+    public void readBookingKO() {
         Assert.assertNull(bookingAS.readBooking(-1));
     }
 

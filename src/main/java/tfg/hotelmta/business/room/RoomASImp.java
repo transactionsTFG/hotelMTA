@@ -72,6 +72,33 @@ public class RoomASImp implements RoomAS {
         }
         return roomDTO;
     }
+    
+    @Override public int deleteRoom(int id) {
+        int res = ErrorResponses.NON_EXISTENT_ROOM;
+        Transaction t = TransactionManager.getInstance().newTransaccion();
+        t.start();
+        EntityManager em = (EntityManager) t.getResource();
+        try {
+            Room room = em.find(Room.class, id);
+            if (room == null) {
+                throw new ASException("Non existent room");
+            }
+            
+            if (!room.isActive()) {
+                res = ErrorResponses.NON_ACTIVE_ROOM;
+                throw new ASException("Non active room");
+            }
+            
+            room.setActive(false);
+            t.commit();
+            res = id;
+            
+        } catch (Exception e) {
+            if (!(e instanceof ASException)){res = ErrorResponses.UNEXPECTED_ERROR;}
+            t.rollback();
+        }
+        return res;
+    }
 
     private boolean isValid(RoomDTO room) {
         return room.getNumber() > 0 && room.getPeopleNumber() > 0;

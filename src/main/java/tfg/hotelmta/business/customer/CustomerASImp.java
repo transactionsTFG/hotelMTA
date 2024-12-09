@@ -73,6 +73,34 @@ public class CustomerASImp implements CustomerAS {
         return customerDTO;
     }
 
+    @Override
+    public int deleteCustomer(int id) {
+        int res = ErrorResponses.NON_EXISTENT_CUSTOMER;
+        Transaction t = TransactionManager.getInstance().newTransaccion();
+        t.start();
+        EntityManager em = (EntityManager) t.getResource();
+        try {
+            Customer customer = em.find(Customer.class, id);
+            if (customer == null) {
+                throw new ASException("Non existent customer");
+            }
+            
+            if (!customer.isActive()) {
+                res = ErrorResponses.NON_ACTIVE_CUSTOMER;
+                throw new ASException("Non active customer");
+            }
+            
+            customer.setActive(false);
+            t.commit();
+            res = id;
+            
+        } catch (Exception e) {
+            if (!(e instanceof ASException)) {res = ErrorResponses.UNEXPECTED_ERROR;}
+            t.rollback();
+        }
+        return res;
+    }
+
     private boolean isValid(CustomerDTO customer) {
         return true;
     }
