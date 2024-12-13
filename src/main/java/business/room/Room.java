@@ -14,7 +14,7 @@ import business.booking.Booking;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "business.room.getByRoomNumber", query = "SELECT r FROM Room r WHERE r.number = :number")
+        @NamedQuery(name = "business.room.getByRoomNumber", query = "SELECT r FROM Room r WHERE r.number = :number")
 })
 public class Room implements Serializable {
 
@@ -43,6 +43,14 @@ public class Room implements Serializable {
         this.setSingleBed(roomDTO.isSingleBed());
         this.setActive(roomDTO.isActive());
         this.setPeopleNumber(roomDTO.getPeopleNumber());
+    }
+
+    public Room(int number, boolean occupied, boolean singleBed, boolean active, int peopleNumber) {
+        this.number = number;
+        this.occupied = occupied;
+        this.singleBed = singleBed;
+        this.active = active;
+        this.peopleNumber = peopleNumber;
     }
 
     public int getId() {
@@ -101,7 +109,7 @@ public class Room implements Serializable {
         this.peopleNumber = peopleNumber;
     }
 
-    public RoomDTO toTransfer() {
+    public RoomDTO toDTO() {
         return new RoomDTO(id, number, occupied, singleBed, active, peopleNumber);
     }
 

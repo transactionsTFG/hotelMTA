@@ -1,95 +1,107 @@
 package common.dto.soap.response;
 
+import business.booking.BookingDTO;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement(name = "BookingSOAP")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BookingSOAP {
     @XmlElement
-    private long id;
+    private int id;
     @XmlElement
-    private String codeFlight;
+    private String date;
     @XmlElement
-    private String weekDay;
+    private int numberOfNights;
     @XmlElement
-    private String arrivalTime;
+    private boolean withBreakfast;
     @XmlElement
-    private String departureTime;
+    private String agencyName;
     @XmlElement
-    private long idAircraft;
+    private int peopleNumber;
     @XmlElement
-    private long idOriginFlight;
-    @XmlElement
-    private long idDestinationFlight;
+    private int customerId;
     @XmlElement
     private boolean active;
 
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getCodeFlight() {
-		return codeFlight;
-	}
-	public void setCodeFlight(String codeFlight) {
-		this.codeFlight = codeFlight;
-	}
-	public String getWeekDay() {
-		return weekDay;
-	}
-	public void setWeekDay(String weekDay) {
-		this.weekDay = weekDay;
-	}
-	public String getArrivalTime() {
-		return arrivalTime;
-	}
-	public void setArrivalTime(String arrivalTime) {
-		this.arrivalTime = arrivalTime;
-	}
-	public String getDepartureTime() {
-		return departureTime;
-	}
-	public void setDepartureTime(String departureTime) {
-		this.departureTime = departureTime;
-	}
-	public long getIdAircraft() {
-		return idAircraft;
-	}
-	public void setIdAircraft(long idAircraft) {
-		this.idAircraft = idAircraft;
-	}
-	public long getIdOriginFlight() {
-		return idOriginFlight;
-	}
-	public void setIdOriginFlight(long idOriginFlight) {
-		this.idOriginFlight = idOriginFlight;
-	}
-	public long getIdDestinationFlight() {
-		return idDestinationFlight;
-	}
-	public void setIdDestinationFlight(long idDestinationFlight) {
-		this.idDestinationFlight = idDestinationFlight;
-	}
-	public boolean isActive() {
-		return active;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public static FlightSOAP toSOAP(FlightDTO flightDTO){
-        FlightSOAP flightSOAP = new FlightSOAP();
-        flightSOAP.setId(flightDTO.getId());
-        flightSOAP.setCodeFlight(flightDTO.getCodeFlight());
-        flightSOAP.setWeekDay(flightDTO.getWeekDay());
-        flightSOAP.setArrivalTime(flightDTO.getArrivalTime());
-        flightSOAP.setDepartureTime(flightDTO.getDepartureTime());
-        flightSOAP.setIdAircraft(flightDTO.getIdAircraft());
-        flightSOAP.setIdOriginFlight(flightDTO.getIdOriginFlight());
-        flightSOAP.setIdDestinationFlight(flightDTO.getIdDestinationFlight());
-        flightSOAP.setActive(flightDTO.isActive());
-        return flightSOAP;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getNumberOfNights() {
+        return numberOfNights;
+    }
+
+    public void setNumberOfNights(int numberOfNights) {
+        this.numberOfNights = numberOfNights;
+    }
+
+    public boolean isWithBreakfast() {
+        return withBreakfast;
+    }
+
+    public void setWithBreakfast(boolean withBreakfast) {
+        this.withBreakfast = withBreakfast;
+    }
+
+    public String getAgencyName() {
+        return agencyName;
+    }
+
+    public void setAgencyName(String agencyName) {
+        this.agencyName = agencyName;
+    }
+
+    public int getPeopleNumber() {
+        return peopleNumber;
+    }
+
+    public void setPeopleNumber(int peopleNumber) {
+        this.peopleNumber = peopleNumber;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public static BookingSOAP toSOAP(BookingDTO bookingDTO) {
+        BookingSOAP bookingSOAP = new BookingSOAP();
+        bookingSOAP.setId(bookingDTO.getId());
+        bookingSOAP.setAgencyName(bookingDTO.getAgencyName());
+        bookingSOAP.setCustomerId(bookingDTO.getCustomerId());
+        bookingSOAP.setDate(bookingDTO.getDate());
+        bookingSOAP.setNumberOfNights(bookingDTO.getNumberOfNights());
+        bookingSOAP.setPeopleNumber(bookingDTO.getPeopleNumber());
+        bookingSOAP.setId(bookingDTO.getId());
+        bookingSOAP.setWithBreakfast(bookingDTO.isWithBreakfast());
+        bookingSOAP.setActive(bookingDTO.isActive());
+        return bookingSOAP;
     }
 
 }

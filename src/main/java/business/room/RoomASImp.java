@@ -1,8 +1,11 @@
 package business.room;
 
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 import business.exception.ASException;
 import business.utils.ErrorResponses;
@@ -11,7 +14,15 @@ import integration.transaction.TransactionManager;
 
 public class RoomASImp implements RoomAS {
 
+    private final EntityManager em;
+
+    @Inject
+    public RoomASImp(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
+    @Transactional
     public int createRoom(RoomDTO roomDTO) {
         int res = ErrorResponses.SYNTAX_ERROR;
         if (!this.isValid(roomDTO)) {
@@ -55,6 +66,7 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
+    @Transactional
     public RoomDTO readRoom(int id) {
         RoomDTO roomDTO = null;
         Transaction t = TransactionManager.getInstance().newTransaccion();
@@ -66,7 +78,7 @@ public class RoomASImp implements RoomAS {
                 throw new ASException("Room with id " + id + " does not exist");
             }
             t.commit();
-            roomDTO = room.toTransfer();
+            roomDTO = room.toDTO();
         } catch (Exception e) {
             t.rollback();
         }
@@ -74,6 +86,7 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
+    @Transactional
     public int deleteRoom(int id) {
         int res = ErrorResponses.NON_EXISTENT_ROOM;
         Transaction t = TransactionManager.getInstance().newTransaccion();

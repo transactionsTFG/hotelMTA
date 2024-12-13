@@ -14,7 +14,7 @@ import business.booking.Booking;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "business.customer.getByDni", query = "SELECT c FROM Customer c WHERE c.dni = :dni")
+        @NamedQuery(name = "business.customer.getByDni", query = "SELECT c FROM Customer c WHERE c.dni = :dni")
 })
 public class Customer implements Serializable {
 
@@ -43,6 +43,14 @@ public class Customer implements Serializable {
         this.setPhone(customerDTO.getPhone());
         this.setDni(customerDTO.getDni());
         this.setActive(customerDTO.isActive());
+    }
+
+    public Customer(String name, String email, String phone, String dni, boolean active) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.dni = dni;
+        this.active = active;
     }
 
     public int getId() {
@@ -101,7 +109,7 @@ public class Customer implements Serializable {
         this.booking = booking;
     }
 
-    public CustomerDTO toTransfer() {
+    public CustomerDTO toDTO() {
         return new CustomerDTO(id, name, email, phone, dni, active);
     }
 

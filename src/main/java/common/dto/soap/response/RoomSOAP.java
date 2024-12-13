@@ -1,66 +1,83 @@
 package common.dto.soap.response;
 
+import business.room.RoomDTO;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement(name = "RoomSOAP")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RoomSOAP {
     @XmlElement
-    private long id;
+    private int id;
     @XmlElement
-	private String date;
+    private int number;
     @XmlElement
-    private double total;
+    private boolean occupied;
     @XmlElement
-	private long idCustomer;
+    private boolean singleBed;
     @XmlElement
     private boolean active;
+    @XmlElement
+    private int peopleNumber;
 
-    public long getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getDate() {
-		return date;
-	}
+    public int getNumber() {
+        return number;
+    }
 
-	public void setDate(String date) {
-		this.date = date;
-	}
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-	public double getTotal() {
-		return total;
-	}
+    public boolean isOccupied() {
+        return occupied;
+    }
 
-	public void setTotal(double total) {
-		this.total = total;
-	}
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
 
-	public long getIdCustomer() {
-		return idCustomer;
-	}
+    public boolean isSingleBed() {
+        return singleBed;
+    }
 
-	public void setIdCustomer(long idCustomer) {
-		this.idCustomer = idCustomer;
-	}
+    public void setSingleBed(boolean singleBed) {
+        this.singleBed = singleBed;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-    
-    public static RoomSOAP toSOAP(ReservationDTO reservationDTO) {
-        RoomSOAP RoomSOAP = new RoomSOAP();
-        RoomSOAP.setId(reservationDTO.getId());
-        RoomSOAP.setDate(reservationDTO.getDate());
-        RoomSOAP.setTotal(reservationDTO.getTotal());
-        RoomSOAP.setIdCustomer(reservationDTO.getIdCustomer());
-        RoomSOAP.setActive(reservationDTO.isActive());
-        return RoomSOAP;
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public int getPeopleNumber() {
+        return peopleNumber;
+    }
+
+    public void setPeopleNumber(int peopleNumber) {
+        this.peopleNumber = peopleNumber;
+    }
+
+    public static RoomSOAP toSOAP(RoomDTO roomDTO) {
+        RoomSOAP roomSOAP = new RoomSOAP();
+        roomSOAP.setId(roomDTO.getId());
+        roomSOAP.setNumber(roomDTO.getNumber());
+        roomSOAP.setOccupied(roomDTO.isOccupied());
+        roomSOAP.setSingleBed(roomDTO.isSingleBed());
+        roomSOAP.setPeopleNumber(roomDTO.getPeopleNumber());
+        roomSOAP.setActive(roomDTO.isActive());
+        return roomSOAP;
     }
 }

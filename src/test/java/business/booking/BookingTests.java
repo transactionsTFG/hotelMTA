@@ -3,16 +3,16 @@ package business.booking;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import business.BusinessFactory;
+
 import business.customer.CustomerAS;
 import business.customer.CustomerDTO;
 import business.room.RoomAS;
 import business.room.RoomDTO;
 import business.utils.ErrorResponses;
+import mocks.UnitTestASManager;
 
-public class BookingTests {
+public class BookingTests extends UnitTestASManager {
 
     // Booking attributes
     private static final String date = "02-02-2025", agencyName = "UCM";
@@ -31,14 +31,6 @@ public class BookingTests {
     private RoomDTO room;
     private CustomerDTO customer;
     private List<RoomDTO> rooms;
-
-    @Before
-    public void setUp() {
-        bookingAS = BusinessFactory.getInstance().createBookingAS();
-        roomAS = BusinessFactory.getInstance().createRoomAS();
-        customerAS = BusinessFactory.getInstance().createCustomerAS();
-        rooms = new ArrayList<>();
-    }
 
     @Test
     public void createBookingOK() {
@@ -94,7 +86,8 @@ public class BookingTests {
         Assert.assertEquals(ErrorResponses.NON_ACTIVE_ROOM, bookingAS.createBooking(booking, rooms));
     }
 
-    // Update is like create but with an extra possible response: non_existent_booking
+    // Update is like create but with an extra possible response:
+    // non_existent_booking
     @Test
     public void updateBookingOK() {
         customer = new CustomerDTO(name, email, phone, dni, active);

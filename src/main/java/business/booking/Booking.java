@@ -6,8 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.util.List;
@@ -46,6 +44,16 @@ public class Booking implements Serializable {
         this.setWithBreakfast(bookingDTO.isWithBreakfast());
         this.setAgencyName(bookingDTO.getAgencyName());
         this.setActive(bookingDTO.isActive());
+    }
+
+    public Booking(String date, int numberOfNights, boolean withBreakfast, String agencyName, int peopleNumber,
+            boolean active) {
+        this.date = date;
+        this.numberOfNights = numberOfNights;
+        this.withBreakfast = withBreakfast;
+        this.agencyName = agencyName;
+        this.peopleNumber = peopleNumber;
+        this.active = active;
     }
 
     public int getId() {
@@ -128,8 +136,9 @@ public class Booking implements Serializable {
         this.peopleNumber = peopleNumber;
     }
 
-    public BookingDTO toTransfer() {
-        return new BookingDTO(id, date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId(), active);
+    public BookingDTO toDTO() {
+        return new BookingDTO(id, date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId(),
+                active);
     }
 
 }

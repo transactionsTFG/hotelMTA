@@ -2,6 +2,8 @@ package common.converter;
 
 import java.time.ZonedDateTime;
 
+import common.dto.result.Result;
+import common.utils.ZonedDateUtils;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
@@ -17,7 +19,7 @@ public class ZonedDateTimeConverter implements AttributeConverter<ZonedDateTime,
     public ZonedDateTime convertToEntityAttribute(String dbData) {
         Result<ZonedDateTime> zoneDateTime =  ZonedDateUtils.getZonedTime(dbData);
         if(!zoneDateTime.isSuccess())
-            throw new RuntimeException("No podemos parsear: " + dbData);
+            throw new RuntimeException("We cannot parse: " + dbData);
         
         return zoneDateTime.getData();
     }

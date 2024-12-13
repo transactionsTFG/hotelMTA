@@ -1,7 +1,10 @@
 package business.booking;
 
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
+import jakarta.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import business.customer.Customer;
@@ -9,13 +12,20 @@ import business.exception.ASException;
 import business.room.Room;
 import business.room.RoomDTO;
 import business.utils.ErrorResponses;
-import common.validators.Validator;
 import integration.transaction.Transaction;
 import integration.transaction.TransactionManager;
 
 public class BookingASImp implements BookingAS {
 
+    private final EntityManager em;
+
+    @Inject
+    public BookingASImp(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
+    @Transactional
     public int createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
         int res = ErrorResponses.SYNTAX_ERROR;
         if (!this.isValid(bookingDTO)) {
@@ -81,6 +91,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
+    @Transactional
     public int updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
         int res = ErrorResponses.SYNTAX_ERROR;
         if (!this.isValid(bookingDTO)) {
@@ -155,6 +166,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
+    @Transactional
     public int deleteBooking(int id) {
         int res = ErrorResponses.NON_EXISTENT_BOOKING;
         Transaction t = TransactionManager.getInstance().newTransaccion();
@@ -204,6 +216,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
+    @Transactional
     public BookingTOA readBooking(int id) {
         BookingTOA bookingTOA = null;
         Transaction t = TransactionManager.getInstance().newTransaccion();
@@ -223,13 +236,13 @@ public class BookingASImp implements BookingAS {
 
             em.lock(customer, LockModeType.OPTIMISTIC);
 
-            List<RoomDTO> rooms = new ArrayList();
+            List<RoomDTO> rooms = new ArrayList<>();
 
             for (Room r : booking.getRoom()) {
                 em.lock(r, LockModeType.OPTIMISTIC);
-                rooms.add(r.toTransfer());
+                rooms.add(r.toDTO());
             }
-            bookingTOA = new BookingTOA(booking.toTransfer(), customer.toTransfer(), rooms);
+            bookingTOA = new BookingTOA(booking.toDTO(), customer.toDTO(), rooms);
             t.commit();
 
         } catch (Exception e) {

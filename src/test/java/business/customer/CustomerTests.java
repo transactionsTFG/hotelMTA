@@ -1,21 +1,17 @@
 package business.customer;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import business.BusinessFactory;
 
-public class CustomerTests {
+import mocks.UnitTestASManager;
+
+
+public class CustomerTests extends UnitTestASManager {
 
     private static final String name = "Juan", email = "juan@gmail.com", phone = "123456789", dni = "12345678A";
 
     private CustomerAS customerAS;
     private CustomerDTO customer;
-
-    @Before
-    public void setUp() {
-        customerAS = BusinessFactory.getInstance().createCustomerAS();
-    }
 
     @Test
     public void createCustomerOK() {

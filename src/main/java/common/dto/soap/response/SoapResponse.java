@@ -1,8 +1,14 @@
 package common.dto.soap.response;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+
 @XmlRootElement(name = "SoapResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({ FlightSOAP.class, ReservationSOAP.class })
+@XmlSeeAlso({ BookingSOAP.class, RoomSOAP.class })
 public class SoapResponse<T> {
     @XmlElement
     private boolean success;

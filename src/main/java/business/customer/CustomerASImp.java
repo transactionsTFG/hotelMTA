@@ -1,8 +1,10 @@
 package business.customer;
 
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import business.exception.ASException;
 import business.utils.ErrorResponses;
 import integration.transaction.Transaction;
@@ -10,7 +12,15 @@ import integration.transaction.TransactionManager;
 
 public class CustomerASImp implements CustomerAS {
 
+    private final EntityManager em;
+
+    @Inject
+    public CustomerASImp(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
+    @Transactional
     public int createCustomer(CustomerDTO customerDTO) {
         int res = ErrorResponses.SYNTAX_ERROR;
 
@@ -55,6 +65,7 @@ public class CustomerASImp implements CustomerAS {
     }
 
     @Override
+    @Transactional
     public CustomerDTO readCustomer(int id) {
         CustomerDTO customerDTO = null;
         Transaction t = TransactionManager.getInstance().newTransaccion();
@@ -66,7 +77,7 @@ public class CustomerASImp implements CustomerAS {
                 throw new ASException("Customer with id " + id + " does not exist");
             }
             t.commit();
-            customerDTO = customer.toTransfer();
+            customerDTO = customer.toDTO();
         } catch (Exception e) {
             t.rollback();
         }
@@ -74,6 +85,7 @@ public class CustomerASImp implements CustomerAS {
     }
 
     @Override
+    @Transactional
     public int deleteCustomer(int id) {
         int res = ErrorResponses.NON_EXISTENT_CUSTOMER;
         Transaction t = TransactionManager.getInstance().newTransaccion();

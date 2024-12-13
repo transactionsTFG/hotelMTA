@@ -1,11 +1,12 @@
 package business.room;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import business.BusinessFactory;
 
-public class RoomTests {
+import mocks.UnitTestASManager;
+
+
+public class RoomTests extends UnitTestASManager {
 
     private static final int number = 1, peopleNumber = 2;
     private static final boolean occupied = false, singleBed = true, active = true;
@@ -13,10 +14,7 @@ public class RoomTests {
     private RoomAS roomAS;
     private RoomDTO room;
 
-    @Before
-    public void setUp() {
-        roomAS = BusinessFactory.getInstance().createRoomAS();
-    }
+
 
     @Test
     public void createRoomOK() {
