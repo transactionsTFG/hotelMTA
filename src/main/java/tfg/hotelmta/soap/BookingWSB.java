@@ -7,23 +7,15 @@ import tfg.hotelmta.business.BusinessFactory;
 import tfg.hotelmta.business.booking.BookingAS;
 import tfg.hotelmta.business.booking.BookingDTO;
 import tfg.hotelmta.business.booking.BookingTOA;
-import tfg.hotelmta.business.room.RoomAS;
 import tfg.hotelmta.business.room.RoomDTO;
 
-@WebService(serviceName = "HotelWSB")
-public class HotelWSB {
+@WebService(serviceName = "BookingWSB")
+public class BookingWSB {
 
     private final BookingAS bookingAS;
-    private final RoomAS roomAS;
 
-    public HotelWSB() {
+    public BookingWSB() {
         this.bookingAS = BusinessFactory.getInstance().createBookingAS();
-        this.roomAS = BusinessFactory.getInstance().createRoomAS();
-    }
-
-    @WebMethod(operationName = "searchRoom")
-    public RoomDTO searchRoom(int roomID) {
-        return this.roomAS.readRoom(roomID);
     }
 
     @WebMethod(operationName = "makeBooking")
