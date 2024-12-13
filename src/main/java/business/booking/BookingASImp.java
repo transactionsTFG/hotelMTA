@@ -9,7 +9,7 @@ import business.exception.ASException;
 import business.room.Room;
 import business.room.RoomDTO;
 import business.utils.ErrorResponses;
-import business.validators.Validator;
+import common.validators.Validator;
 import integration.transaction.Transaction;
 import integration.transaction.TransactionManager;
 

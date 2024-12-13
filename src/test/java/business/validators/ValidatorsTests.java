@@ -3,6 +3,8 @@ package business.validators;
 import org.junit.Assert;
 import org.junit.Test;
 
+import common.validators.Validator;
+
 public class ValidatorsTests {
 
     @Test

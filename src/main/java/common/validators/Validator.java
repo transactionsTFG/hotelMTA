@@ -1,4 +1,4 @@
-package business.validators;
+package common.validators;
 
 public class Validator {
 
