@@ -1,7 +1,7 @@
 package main;
 
 import jakarta.xml.ws.Endpoint;
-import tfg.hotelmta.soap.BookingWSB;
+import soap.BookingWSB;
 
 public class Main {
     public static void main(String[] args) {
