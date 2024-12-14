@@ -1,10 +1,13 @@
 package business.customer;
 
+import common.dto.result.Result;
+import common.exception.ASException;
+
 public interface CustomerAS {
 
-    public int createCustomer(CustomerDTO customerDTO);
+    public Result<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws ASException;
 
-    public CustomerDTO readCustomer(int id);
+    public Result<CustomerDTO> readCustomer(int id) throws ASException;
 
-    public int deleteCustomer(int id);
+    public Result<Void> deleteCustomer(int id) throws ASException;
 }
