@@ -4,7 +4,7 @@ public class Validator {
 
     // DD-MM-YYYY
     public static boolean isDate(String date) {
-        if (date.isBlank() || date.isEmpty()) {
+        if (isBlankOrEmpty(date)) {
             return false;
         }
 
@@ -12,28 +12,41 @@ public class Validator {
     }
 
     public static boolean isEmail(String email) {
-        if (email.isBlank() || email.isEmpty()) {
+        if (isBlankOrEmpty(email)) {
             return false;
         }
         return email.matches("");
     }
 
     public static boolean isPhone(String phone) {
-        if (phone.isBlank() || phone.isEmpty()) {
+        if (isBlankOrEmpty(phone)) {
             return false;
         }
         return phone.matches("\\d{9}");
     }
 
     public static boolean isDni(String dni) {
-        if (dni.isBlank() || dni.isEmpty()) {
+        if (isBlankOrEmpty(dni)) {
             return false;
         }
         return dni.matches("[A-Z]{8}\\d");
     }
 
+    public static boolean isName(String name) {
+        if (isBlankOrEmpty(name)) {
+            return false;
+        }
+        return name.matches("[a-zA-Z ]+");
+    }
+
     public static boolean hasSQLInjection(String str) {
-        return false;
-//return !str.matches("");
+        if (isBlankOrEmpty(str)) {
+            return false;
+        }
+        return str.matches("[a-zA-Z0-9 ]+");
+    }
+
+    private static boolean isBlankOrEmpty(String str) {
+        return str.isBlank() || str.isEmpty();
     }
 }
