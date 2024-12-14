@@ -7,7 +7,6 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-import business.exception.ASException;
 import business.utils.ErrorResponses;
 import integration.transaction.Transaction;
 import integration.transaction.TransactionManager;

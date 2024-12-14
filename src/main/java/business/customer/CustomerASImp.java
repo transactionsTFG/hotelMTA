@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import business.exception.ASException;
 import business.utils.ErrorResponses;
 import integration.transaction.Transaction;
 import integration.transaction.TransactionManager;
