@@ -84,12 +84,12 @@ public class RoomASImp implements RoomAS {
 
     private void isValid(RoomDTO room) throws ASException {
         if (room == null)
-            throw new RoomASException(ASError.NULL_ROOM);
+            throw new RoomASException(ASError.NON_EXISTENT_ROOM);
 
         if (room.getNumber() < 0)
-            throw new RoomASException(ASError.NEGATIVE_ROOM_NUMBER);
+            throw new RoomASException(ASError.INVALID_ROOM_NUMBER);
 
         if (room.getPeopleNumber() <= 0)
-            throw new RoomASException(ASError.NEGATIVE_PEOPLE_NUMBER);
+            throw new RoomASException(ASError.INVALID_PEOPLE_NUMBER);
     }
 }

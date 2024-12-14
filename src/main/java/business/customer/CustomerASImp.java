@@ -1,19 +1,16 @@
 package business.customer;
 
+import common.consts.ASError;
+import common.dto.result.Result;
+import common.exception.ASException;
+import common.exception.CustomerASException;
+import common.validators.Validator;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import business.utils.ErrorResponses;
-import common.consts.ASError;
-import common.dto.result.Result;
-import common.exception.ASException;
-import common.exception.CustomerASException;
-import common.validators.Validator;
-import integration.transaction.Transaction;
-import integration.transaction.TransactionManager;
 
 @Stateless
 public class CustomerASImp implements CustomerAS {
@@ -62,7 +59,7 @@ public class CustomerASImp implements CustomerAS {
         Customer customer = em.find(Customer.class, id, LockModeType.OPTIMISTIC);
 
         if (customer == null) {
-            throw new CustomerASException(ASError.CUSTOMER_NOT_FOUND);
+            throw new CustomerASException(ASError.NON_EXISTENT_CUSTOMER);
         }
 
         return Result.success(customer.toDTO());
@@ -76,7 +73,7 @@ public class CustomerASImp implements CustomerAS {
         Customer customer = em.find(Customer.class, id);
 
         if (customer == null) {
-            throw new CustomerASException(ASError.CUSTOMER_NOT_FOUND);
+            throw new CustomerASException(ASError.NON_EXISTENT_CUSTOMER);
         }
 
         if (!customer.isActive()) {
@@ -90,7 +87,7 @@ public class CustomerASImp implements CustomerAS {
 
     private void isValid(CustomerDTO customer) throws ASException {
         if (customer == null)
-            throw new ASException(ASError.NULL_CUSTOMER);
+            throw new ASException(ASError.NON_EXISTENT_CUSTOMER);
         if (!Validator.isDni(customer.getDni()))
             throw new ASException(ASError.INVALID_DNI);
         if (!Validator.isEmail(customer.getEmail()))
