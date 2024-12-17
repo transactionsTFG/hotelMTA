@@ -3,6 +3,8 @@ package business.customer;
 import org.junit.Assert;
 import org.junit.Test;
 
+import common.dto.result.Result;
+import common.exception.ASException;
 import mocks.UnitTestASManager;
 
 
@@ -14,22 +16,22 @@ public class CustomerTests extends UnitTestASManager {
     private CustomerDTO customer;
 
     @Test
-    public void createCustomerOK() {
+    public void createCustomerOK() throws ASException {
         customer = new CustomerDTO(name, email, phone, dni, true);
-        Assert.assertTrue(customerAS.createCustomer(customer) > 0);
+        Assert.assertTrue(customerAS.createCustomer(customer).isSuccess());
     }
 
     @Test
-    public void readCustomerOK() {
+    public void readCustomerOK() throws ASException {
         customer = new CustomerDTO(name, email, phone, dni, true);
-        int res = customerAS.createCustomer(customer);
-        Assert.assertTrue(res > 0);
-        Assert.assertNotNull(customerAS.readCustomer(res));
+        Result<CustomerDTO> res = customerAS.createCustomer(customer);
+        Assert.assertTrue(res.isSuccess());
+        Assert.assertTrue(customerAS.readCustomer(res.getData().getId()).isSuccess());
     }
 
     @Test
-    public void readCustomerKO() {
-        Assert.assertNull(customerAS.readCustomer(-1));
+    public void readCustomerKO() throws ASException {
+        Assert.assertFalse(customerAS.readCustomer(-1).isSuccess());
     }
 
 }

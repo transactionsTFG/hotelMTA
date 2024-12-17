@@ -3,6 +3,8 @@ package business.room;
 import org.junit.Assert;
 import org.junit.Test;
 
+import common.dto.result.Result;
+import common.exception.ASException;
 import mocks.UnitTestASManager;
 
 
@@ -17,23 +19,22 @@ public class RoomTests extends UnitTestASManager {
 
 
     @Test
-    public void createRoomOK() {
+    public void createRoomOK() throws ASException {
         room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
-        int res = this.roomAS.createRoom(room);
-        Assert.assertTrue("Response: " + res, res > 0);
-
+        Result<RoomDTO> res = this.roomAS.createRoom(room);
+        Assert.assertTrue("Response: " + res, res.isSuccess());
     }
 
     @Test
-    public void searchRoomOK() {
+    public void searchRoomOK() throws ASException {
         room = new RoomDTO(number + 1, occupied, singleBed, active, peopleNumber);
-        Assert.assertTrue(this.roomAS.createRoom(room) > 0);
-        Assert.assertNotNull(this.roomAS.readRoom(room.getId()));
+        Assert.assertTrue(this.roomAS.createRoom(room).isSuccess());
+        Assert.assertTrue(this.roomAS.readRoom(room.getId()).isSuccess());
     }
 
     @Test
-    public void searchRoomKO() {
-        Assert.assertNull(roomAS.readRoom(-1));
+    public void searchRoomKO() throws ASException {
+        Assert.assertFalse(roomAS.readRoom(-1).isSuccess());
     }
 
 }
