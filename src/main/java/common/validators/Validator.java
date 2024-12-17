@@ -15,7 +15,7 @@ public class Validator {
         if (isBlankOrEmpty(email)) {
             return false;
         }
-        return email.matches("");
+        return email.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
     }
 
     public static boolean isPhone(String phone) {
@@ -29,7 +29,7 @@ public class Validator {
         if (isBlankOrEmpty(dni)) {
             return false;
         }
-        return dni.matches("[A-Z]{8}\\d");
+        return dni.matches("\\d{8}[A-Z]");
     }
 
     public static boolean isName(String name) {
@@ -39,11 +39,12 @@ public class Validator {
         return name.matches("[a-zA-Z ]+");
     }
 
+    // TODO: need to be refactored
     public static boolean hasSQLInjection(String str) {
         if (isBlankOrEmpty(str)) {
             return false;
         }
-        return str.matches("[a-zA-Z0-9 ]+");
+        return str.matches("insert|select|delete|update");
     }
 
     private static boolean isBlankOrEmpty(String str) {
