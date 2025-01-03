@@ -7,7 +7,7 @@ import tfg.hotelmta.business.BusinessFactory;
 
 public class CustomerTests {
 
-    private static final String name = "Juan", email = "juan@gmail.com", phone = "123456789", dni = "12345678A";
+    private static final String name = "Juan", email = "juan@gmail.com", phone = "123456789", dni = "12345678";
 
     private CustomerAS customerAS;
     private CustomerDTO customer;
@@ -19,13 +19,13 @@ public class CustomerTests {
 
     @Test
     public void createCustomerOK() {
-        customer = new CustomerDTO(name, email, phone, dni, true);
+        customer = new CustomerDTO(name, email, phone, dni + "A", true);
         Assert.assertTrue(customerAS.createCustomer(customer) > 0);
     }
 
     @Test
     public void readCustomerOK() {
-        customer = new CustomerDTO(name, email, phone, dni, true);
+        customer = new CustomerDTO(name, email, phone, dni + "B", true);
         int res = customerAS.createCustomer(customer);
         Assert.assertTrue(res > 0);
         Assert.assertNotNull(customerAS.readCustomer(res));
