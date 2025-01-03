@@ -38,8 +38,7 @@ public class BookingASImp implements BookingAS {
             throw new BookingASException(ASError.INVALID_ROOM_LIST);
         }
 
-        Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(),
-                LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        Customer customer = em.find(Customer.class, bookingDTO.getCustomerId());
 
         if (customer == null) {
             throw new BookingASException(ASError.NON_EXISTENT_CUSTOMER);

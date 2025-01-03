@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 
 import business.booking.BookingAS;
 import business.booking.BookingASImp;
+import business.customer.CustomerAS;
+import business.customer.CustomerASImp;
 import business.room.RoomAS;
 import business.room.RoomASImp;
 import integration.environment.PersistenceConfig;
@@ -18,6 +20,7 @@ public abstract class UnitTestASManager {
 
     protected static BookingAS bookingAS;
     protected static RoomAS roomAS;
+    protected static CustomerAS customerAS;
     protected static ConsultMocks getMock;
     protected EntityManager em;
     protected static EntityManagerFactory emf;
@@ -41,7 +44,7 @@ public abstract class UnitTestASManager {
         getMock = new ConsultMocks(em);
         bookingAS = new BookingASImp(em);
         roomAS = new RoomASImp(em);
-
+        customerAS = new CustomerASImp(em);
     }
 
     @After

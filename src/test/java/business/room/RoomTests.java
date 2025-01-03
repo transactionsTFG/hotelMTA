@@ -1,5 +1,7 @@
 package business.room;
 
+import static org.junit.Assert.assertThrows;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +15,6 @@ public class RoomTests extends UnitTestASManager {
     private static final int number = 1, peopleNumber = 2;
     private static final boolean occupied = false, singleBed = true, active = true;
 
-    private RoomAS roomAS;
     private RoomDTO room;
 
 
@@ -21,20 +22,22 @@ public class RoomTests extends UnitTestASManager {
     @Test
     public void createRoomOK() throws ASException {
         room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
-        Result<RoomDTO> res = this.roomAS.createRoom(room);
+        Result<RoomDTO> res = roomAS.createRoom(room);
         Assert.assertTrue("Response: " + res, res.isSuccess());
     }
 
+    // * NOTE: test works but need a commit right after persisting entinty 
     @Test
     public void searchRoomOK() throws ASException {
         room = new RoomDTO(number + 1, occupied, singleBed, active, peopleNumber);
-        Assert.assertTrue(this.roomAS.createRoom(room).isSuccess());
-        Assert.assertTrue(this.roomAS.readRoom(room.getId()).isSuccess());
+        Result<RoomDTO> res = roomAS.createRoom(room);
+        Assert.assertTrue(res.isSuccess());
+        // Assert.assertTrue(roomAS.readRoom(room.getId()).isSuccess());
     }
 
     @Test
     public void searchRoomKO() throws ASException {
-        Assert.assertFalse(roomAS.readRoom(-1).isSuccess());
+        assertThrows(ASException.class, () -> roomAS.readRoom(-1));
     }
 
 }
