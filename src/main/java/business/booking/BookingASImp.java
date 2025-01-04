@@ -163,7 +163,7 @@ public class BookingASImp implements BookingAS {
         for (Room r : booking.getRoom()) {
             em.lock(r, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
             r.setOccupied(false);
-            booking.getRoom().remove(r);
+            // booking.getRoom().remove(r);
         }
 
         em.persist(booking);
