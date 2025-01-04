@@ -2,41 +2,60 @@ package business.room;
 
 import static org.junit.Assert.assertThrows;
 
+import java.util.Random;
+
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import common.dto.result.Result;
 import common.exception.ASException;
 import mocks.UnitTestASManager;
 
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RoomTests extends UnitTestASManager {
 
-    private static final int number = 1, peopleNumber = 2;
+    private static final int peopleNumber = 2;
     private static final boolean occupied = false, singleBed = true, active = true;
+    private static int number = 99999999, roomId = 0;
 
     private RoomDTO room;
 
+    private int getRandomNumber() {
+        return new Random().nextInt(number);
+    }
 
+    private void updateRoomId() {
+        roomId++;
+    }
 
     @Test
-    public void createRoomOK() throws ASException {
+    public void a1CreateRoomOK() throws ASException {
+        number = getRandomNumber();
         room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
         Result<RoomDTO> res = roomAS.createRoom(room);
         Assert.assertTrue("Response: " + res, res.isSuccess());
+        updateRoomId();
     }
 
-    // * NOTE: test works but need a commit right after persisting entinty 
+    // * NOTE: test works but need a commit right after persisting entinty
     @Test
-    public void searchRoomOK() throws ASException {
-        room = new RoomDTO(number + 1, occupied, singleBed, active, peopleNumber);
+    public void b1Init() throws ASException {
+        number = getRandomNumber();
+        room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
         Result<RoomDTO> res = roomAS.createRoom(room);
         Assert.assertTrue(res.isSuccess());
-        // Assert.assertTrue(roomAS.readRoom(room.getId()).isSuccess());
+
     }
 
     @Test
-    public void searchRoomKO() throws ASException {
+    public void b2SearchRoomOK() throws ASException {
+        Assert.assertTrue(roomAS.readRoom(roomId).isSuccess());
+    }
+
+    @Test
+    public void b3SearchRoomKO() throws ASException {
         assertThrows(ASException.class, () -> roomAS.readRoom(-1));
     }
 
