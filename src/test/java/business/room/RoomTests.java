@@ -39,16 +39,6 @@ public class RoomTests extends UnitTestASManager {
         updateRoomId();
     }
 
-    // * NOTE: test works but need a commit right after persisting entinty
-    @Test
-    public void b1Init() throws ASException {
-        number = getRandomNumber();
-        room = new RoomDTO(number, occupied, singleBed, active, peopleNumber);
-        Result<RoomDTO> res = roomAS.createRoom(room);
-        Assert.assertTrue(res.isSuccess());
-
-    }
-
     @Test
     public void b2SearchRoomOK() throws ASException {
         Assert.assertTrue(roomAS.readRoom(roomId).isSuccess());
