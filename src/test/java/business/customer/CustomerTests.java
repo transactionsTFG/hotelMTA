@@ -26,7 +26,7 @@ public class CustomerTests extends UnitTestASManager {
 
     @Test
     public void a1CreateCustomerOK() throws ASException {
-        customer = new CustomerDTO(name, email, phone, dni + "A", true);
+        customer = new CustomerDTO(name, email, phone, dni + "Z", true);
         Assert.assertTrue(customerAS.createCustomer(customer).isSuccess());
         updateCustomerId();
     }
