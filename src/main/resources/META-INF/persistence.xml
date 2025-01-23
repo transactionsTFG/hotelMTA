@@ -7,7 +7,7 @@
         <class>business.booking.Booking</class>
         <class>business.customer.Customer</class>
         <class>business.room.Room</class>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
         <properties>
             <property name="jakarta.persistence.jtaDataSource" value="jdbc/hotel" />
             <property name="jakarta.persistence.schema-generation.database.action"
