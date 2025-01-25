@@ -1,6 +1,40 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ucm.tfg/hotelMTA"
     targetNamespace="http://ucm.tfg/hotelMTA" elementFormDefault="qualified">
 
+    <!-- REPRESENTACIÓN DE UN CLIENTE -->
+    <xs:complexType name="customer">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int" />
+            <xs:element name="dni" type="xs:string" />
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="email" type="xs:string" />
+            <xs:element name="phone" type="xs:string" />
+            <xs:element name="active" type="xs:boolean" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- CREAR UN CLIENTE -->
+    <xs:element name="createCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dni" type="xs:string" />
+                <xs:element name="name" type="xs:string" />
+                <xs:element name="email" type="xs:string" />
+                <xs:element name="phone" type="xs:string" />
+                <xs:element name="active" type="xs:boolean" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="tns:customer" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- LEER UN CLIENTE -->
     <xs:element name="getCustomerRequest">
         <xs:complexType>
             <xs:sequence>
@@ -17,14 +51,27 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="customer">
-        <xs:sequence>
-            <xs:element name="dni" type="xs:string" />
-            <xs:element name="name" type="xs:string" />
-            <xs:element name="email" type="xs:string" />
-            <xs:element name="phone" type="xs:string" />
-            <xs:element name="active" type="xs:boolean" />
-        </xs:sequence>
-    </xs:complexType>
+    <!-- ACTUALIZAR UN CLIENTE -->
+    <xs:element name="actualizarCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int" />
+                <xs:element name="dni" type="xs:string" />
+                <xs:element name="name" type="xs:string" />
+                <xs:element name="email" type="xs:string" />
+                <xs:element name="phone" type="xs:string" />
+                <xs:element name="active" type="xs:boolean" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="actualizarCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="tns:customer" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 
 </xs:schema>
