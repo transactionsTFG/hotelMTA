@@ -1,4 +1,4 @@
-package ucm.tfg.hotelMTA;
+package ucm.tfg.hotelMTA.endpoints;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -8,6 +8,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import tfg.ucm.hotelmta.GetRoomRequest;
 import tfg.ucm.hotelmta.GetRoomResponse;
+import ucm.tfg.hotelMTA.repository.RoomRepository;
 
 @Endpoint
 public class RoomEndpoint {

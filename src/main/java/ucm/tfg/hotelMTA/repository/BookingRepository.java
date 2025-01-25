@@ -1,4 +1,4 @@
-package ucm.tfg.hotelMTA;
+package ucm.tfg.hotelMTA.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
