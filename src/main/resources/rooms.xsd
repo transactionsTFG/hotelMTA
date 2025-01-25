@@ -1,0 +1,30 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ucm.tfg/hotelMTA"
+    targetNamespace="http://ucm.tfg/hotelMTA" elementFormDefault="qualified">
+
+    <xs:element name="getRoomRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="number" type="xs:int" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRoomResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="room" type="tns:room" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="room">
+        <xs:sequence>
+            <xs:element name="number" type="xs:int" />
+            <xs:element name="occupied" type="xs:boolean" />
+            <xs:element name="singleBed" type="xs:boolean" />
+            <xs:element name="active" type="xs:boolean" />
+            <xs:element name="peopleNumber" type="xs:int" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
