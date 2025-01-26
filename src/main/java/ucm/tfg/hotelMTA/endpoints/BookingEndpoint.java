@@ -26,7 +26,7 @@ public class BookingEndpoint {
 	@ResponsePayload
 	public GetBookingResponse getCountry(@RequestPayload GetBookingRequest request) {
 		GetBookingResponse response = new GetBookingResponse();
-		response.setBooking(bookingRepository.getBooking(request.getId()));
+		response.setBooking(bookingRepository.findById(request.getId()));
 
 		return response;
 	}

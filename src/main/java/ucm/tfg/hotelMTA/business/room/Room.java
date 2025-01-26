@@ -16,13 +16,13 @@ import ucm.tfg.hotelMTA.business.booking.Booking;
 @AllArgsConstructor
 @Data
 @Entity
-public class Room implements Serializable {
+public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Version
-    private int version;
+    // @Version
+    // private int version;
     private int number;
     private boolean occupied;
     private boolean singleBed;
@@ -42,5 +42,16 @@ public class Room implements Serializable {
 
     public RoomDTO toDTO() {
         return new RoomDTO(id, number, occupied, singleBed, active, peopleNumber);
+    }
+
+    public tfg.ucm.hotelmta.Room toXML() {
+        tfg.ucm.hotelmta.Room xmlRoom = new tfg.ucm.hotelmta.Room();
+        xmlRoom.setId(id);
+        xmlRoom.setNumber(number);
+        xmlRoom.setOccupied(occupied);
+        xmlRoom.setSingleBed(singleBed);
+        xmlRoom.setActive(active);
+        xmlRoom.setPeopleNumber(peopleNumber);
+        return xmlRoom;
     }
 }

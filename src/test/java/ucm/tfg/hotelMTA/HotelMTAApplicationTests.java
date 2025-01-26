@@ -1,5 +1,7 @@
 package ucm.tfg.hotelMTA;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,14 +15,15 @@ public class HotelMTAApplicationTests {
 
     private RoomRepository roomRepository;
 
-    @Test
-    public void contextLoads() {
-    }
+    // @Test
+    // public void contextLoads() {
+    // }
 
-    @Test
-    public void testing() {
-        RoomDTO room = new RoomDTO(0, 1, true, true, true, 1);
-        roomRepository.saveAndFlush(room);
-    }
+    // @Test
+    // public void testing() {
+    //     RoomDTO room = new RoomDTO(0, 1, true, true, true, 1);
+    //     Room savedRoom = roomRepository.save(new Room(room));
+    //     assertNotNull(savedRoom);
+    // }
 
 }

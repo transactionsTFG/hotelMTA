@@ -10,9 +10,9 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>producing-web-service-initial</artifactId>
+    <artifactId>hotelMTA</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>producing-web-service-initial</name>
+    <name>hotelMTA</name>
     <description>HotelMTA</description>
     <properties>
         <java.version>17</java.version>
@@ -51,10 +51,23 @@
             <scope>runtime</scope>
         </dependency>
 
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>annotationProcessor</scope>
+        </dependency>
+
+        <!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docker-compose</artifactId>
+            <scope>runtime</scope>
+        </dependency> -->
+
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

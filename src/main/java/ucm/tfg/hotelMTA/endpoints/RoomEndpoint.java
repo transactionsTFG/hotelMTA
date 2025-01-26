@@ -26,7 +26,7 @@ public class RoomEndpoint {
 	@ResponsePayload
 	public GetRoomResponse getCountry(@RequestPayload GetRoomRequest request) {
 		GetRoomResponse response = new GetRoomResponse();
-		response.setRoom(roomRepository.getRoom(request.getNumber()));
+		response.setRoom(roomRepository.findByNumber(request.getNumber()).toXML());
 
 		return response;
 	}

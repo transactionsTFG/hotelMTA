@@ -26,7 +26,7 @@ public class CustomerEndpoint {
 	@ResponsePayload
 	public GetCustomerResponse getCountry(@RequestPayload GetCustomerRequest request) {
 		GetCustomerResponse response = new GetCustomerResponse();
-        response.setCustomer(customerRepository.getCustomer(request.getDni()));
+        response.setCustomer(customerRepository.findByDni(request.getDni()));
 
 		return response;
 	}
