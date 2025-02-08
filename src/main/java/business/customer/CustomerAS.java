@@ -1,7 +1,6 @@
 package business.customer;
 
 import common.dto.result.Result;
-import common.exception.ASException;
 
 public interface CustomerAS {
 
