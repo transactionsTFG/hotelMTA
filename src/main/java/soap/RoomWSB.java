@@ -23,7 +23,7 @@ public class RoomWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOM)
-    @Transactional
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<RoomSOAP> searchRoom(int roomId) {
         final Result<RoomDTO> room = this.roomAS.readRoom(roomId);
         return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomSOAP.toSOAP(room.getData()),

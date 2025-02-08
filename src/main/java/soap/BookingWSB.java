@@ -28,7 +28,7 @@ public class BookingWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.MAKE_BOOKING)
-    @Transactional
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> makeBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
         final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingDTO, rooms);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
@@ -36,7 +36,7 @@ public class BookingWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.MODIFY_BOOKING)
-    @Transactional
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> modifyBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
         final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingDTO, rooms);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
@@ -45,14 +45,14 @@ public class BookingWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.CANCEL_BOOKING)
-    @Transactional
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<Void> cancelBooking(int bookingID) {
         final Result<Void> booking = this.bookingAS.deleteBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking);
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_BOOKING)
-    @Transactional
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> searchBooking(int bookingID) {
         final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),

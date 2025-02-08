@@ -1,15 +1,15 @@
 package business.room;
 
-import common.consts.ASError;
-import common.dto.result.Result;
-import common.exception.ASException;
-import common.exception.RoomASException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
+
+import common.consts.ASError;
+import common.dto.result.Result;
+import common.exception.ASException;
+import common.exception.RoomASException;
 
 @Stateless
 public class RoomASImp implements RoomAS {
@@ -24,7 +24,7 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    public Result<RoomDTO> createRoom(RoomDTO roomDTO) throws ASException {
+    public Result<RoomDTO> createRoom(RoomDTO roomDTO) {
 
         this.isValid(roomDTO);
 
@@ -53,7 +53,7 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    public Result<RoomDTO> readRoom(int id) throws ASException {
+    public Result<RoomDTO> readRoom(int id) {
         Room room = this.em.find(Room.class, id, LockModeType.OPTIMISTIC);
         if (room == null)
             throw new RoomASException(ASError.ROOM_NOT_FOUND);
@@ -63,7 +63,7 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    public Result<Void> deleteRoom(int id) throws ASException {
+    public Result<Void> deleteRoom(int id) {
 
         Room room = this.em.find(Room.class, id);
 
