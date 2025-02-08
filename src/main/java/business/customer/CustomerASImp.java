@@ -10,12 +10,13 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 @Stateless
 public class CustomerASImp implements CustomerAS {
 
-    private final EntityManager em;
+    private EntityManager em;
+
+    public CustomerASImp(){}
 
     @Inject
     public CustomerASImp(EntityManager em) {
@@ -23,8 +24,7 @@ public class CustomerASImp implements CustomerAS {
     }
 
     @Override
-    @Transactional
-    public Result<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws ASException {
+    public Result<CustomerDTO> createCustomer(CustomerDTO customerDTO) {
 
         this.isValid(customerDTO);
 
@@ -53,8 +53,7 @@ public class CustomerASImp implements CustomerAS {
     }
 
     @Override
-    @Transactional
-    public Result<CustomerDTO> readCustomer(int id) throws ASException {
+    public Result<CustomerDTO> readCustomer(int id) {
 
         Customer customer = em.find(Customer.class, id, LockModeType.OPTIMISTIC);
 
@@ -67,8 +66,7 @@ public class CustomerASImp implements CustomerAS {
     }
 
     @Override
-    @Transactional
-    public Result<Void> deleteCustomer(int id) throws ASException {
+    public Result<Void> deleteCustomer(int id) {
 
         Customer customer = em.find(Customer.class, id);
 
@@ -85,7 +83,7 @@ public class CustomerASImp implements CustomerAS {
 
     }
 
-    private void isValid(CustomerDTO customer) throws ASException {
+    private void isValid(CustomerDTO customer) {
         if (customer == null)
             throw new ASException(ASError.NON_EXISTENT_CUSTOMER);
         if (!Validator.isDni(customer.getDni()))

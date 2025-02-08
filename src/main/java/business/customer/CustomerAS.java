@@ -5,9 +5,9 @@ import common.exception.ASException;
 
 public interface CustomerAS {
 
-    public Result<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws ASException;
+    public Result<CustomerDTO> createCustomer(CustomerDTO customerDTO);
 
-    public Result<CustomerDTO> readCustomer(int id) throws ASException;
+    public Result<CustomerDTO> readCustomer(int id);
 
-    public Result<Void> deleteCustomer(int id) throws ASException;
+    public Result<Void> deleteCustomer(int id);
 }
