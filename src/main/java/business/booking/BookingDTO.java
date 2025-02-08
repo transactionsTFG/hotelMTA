@@ -11,6 +11,8 @@ public class BookingDTO {
     private int customerId;
     private boolean active;
 
+    public BookingDTO(){}
+
     public BookingDTO(int id, String date, int numberOfNights, boolean withBreakfast, String agencyName,
             int peopleNumber, int customerId, boolean active) {
         super();
