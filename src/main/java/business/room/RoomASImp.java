@@ -29,8 +29,8 @@ public class RoomASImp implements RoomAS {
 
         TypedQuery<Room> query = em.createNamedQuery("business.room.getByRoomNumber", Room.class);
         query.setParameter("number", roomDTO.getNumber());
-        Room room = query.getResultList().isEmpty() ? null : query.getResultList().getFirst();
-
+        Room room = query.getResultList().isEmpty() ? null : query.getResultList().get(0); 
+        
         if (room == null) {
             room = new Room(roomDTO);
             em.persist(room);

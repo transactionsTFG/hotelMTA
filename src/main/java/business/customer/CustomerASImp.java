@@ -30,7 +30,7 @@ public class CustomerASImp implements CustomerAS {
 
         TypedQuery<Customer> query = em.createNamedQuery("business.customer.getByDni", Customer.class);
         query.setParameter("dni", customerDTO.getDni());
-        Customer customer = query.getResultList().isEmpty() ? null : query.getResultList().getFirst();
+        Customer customer = query.getResultList().isEmpty() ? null : query.getResultList().get(0);
 
         if (customer == null) {
             customer = new Customer(customerDTO);
