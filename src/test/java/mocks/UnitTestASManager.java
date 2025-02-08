@@ -12,9 +12,9 @@ import business.customer.CustomerASImp;
 import business.room.RoomAS;
 import business.room.RoomASImp;
 import integration.environment.PersistenceConfig;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public abstract class UnitTestASManager {
 

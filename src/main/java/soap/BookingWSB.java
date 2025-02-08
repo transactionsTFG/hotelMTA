@@ -2,6 +2,10 @@ package soap;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+
 import business.booking.BookingAS;
 import business.booking.BookingDTO;
 import business.booking.BookingTOA;
@@ -11,9 +15,6 @@ import common.dto.result.Result;
 import common.dto.soap.response.BookingSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
-import jakarta.inject.Inject;
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebService;
 
 @WebService(serviceName = "BookingWSB")
 public class BookingWSB {

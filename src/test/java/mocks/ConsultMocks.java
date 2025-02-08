@@ -4,8 +4,8 @@ import business.booking.Booking;
 import business.booking.BookingDTO;
 import business.customer.Customer;
 import business.customer.CustomerDTO;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 public class ConsultMocks {
     private final EntityManager em;

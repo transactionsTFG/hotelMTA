@@ -1,7 +1,7 @@
 package integration.transaction;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import integration.SingletonEntityManager;
 
 public class TransactionJPA implements Transaction {

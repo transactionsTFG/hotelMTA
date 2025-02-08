@@ -1,8 +1,8 @@
 package soap;
 
-import jakarta.inject.Inject;
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebService;
+import javax.inject.Inject;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
 import business.room.RoomAS;
 import business.room.RoomDTO;

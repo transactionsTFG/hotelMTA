@@ -3,7 +3,7 @@ package mocks;
 import business.booking.Booking;
 import business.customer.Customer;
 import business.room.Room;
-import jakarta.persistence.EntityManager;
+import javax.persistence.EntityManager;
 
 public class UnitTestEMGenerator {
     private static UnitTestEMGenerator GENERATE = null;

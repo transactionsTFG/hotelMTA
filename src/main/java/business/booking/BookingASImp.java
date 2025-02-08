@@ -12,11 +12,11 @@ import common.dto.result.Result;
 import common.exception.ASException;
 import common.exception.BookingASException;
 import common.validators.Validator;
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
-import jakarta.transaction.Transactional;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.transaction.Transactional;
 
 @Stateless
 public class BookingASImp implements BookingAS {
