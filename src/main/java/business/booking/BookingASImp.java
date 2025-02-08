@@ -9,7 +9,6 @@ import business.room.Room;
 import business.room.RoomDTO;
 import common.consts.ASError;
 import common.dto.result.Result;
-import common.exception.ASException;
 import common.exception.BookingASException;
 import common.validators.Validator;
 import javax.ejb.Stateless;
@@ -21,7 +20,9 @@ import javax.transaction.Transactional;
 @Stateless
 public class BookingASImp implements BookingAS {
 
-    private final EntityManager em;
+    private EntityManager em;
+
+    public BookingASImp(){}
 
     @Inject
     public BookingASImp(EntityManager em) {
@@ -29,8 +30,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    @Transactional
-    public Result<BookingTOA> createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) throws ASException {
+    public Result<BookingTOA> createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
 
         this.isValid(bookingDTO);
 
@@ -82,8 +82,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    @Transactional
-    public Result<BookingTOA> updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) throws ASException {
+    public Result<BookingTOA> updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
         this.isValid(bookingDTO);
 
         Booking booking = em.find(Booking.class, bookingDTO.getId());
@@ -145,8 +144,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    @Transactional
-    public Result<Void> deleteBooking(int id) throws ASException {
+    public Result<Void> deleteBooking(int id) {
 
         Booking booking = em.find(Booking.class, id);
 
@@ -173,8 +171,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    @Transactional
-    public Result<BookingTOA> readBooking(int id) throws ASException {
+    public Result<BookingTOA> readBooking(int id) {
 
         Booking booking = em.find(Booking.class, id);
 
@@ -187,7 +184,7 @@ public class BookingASImp implements BookingAS {
 
     }
 
-    private void isValid(BookingDTO booking) throws ASException {
+    private void isValid(BookingDTO booking) {
         if (booking == null) {
             throw new BookingASException(ASError.NON_EXISTENT_BOOKING);
         }

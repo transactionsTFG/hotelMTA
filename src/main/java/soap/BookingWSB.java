@@ -15,6 +15,7 @@ import common.dto.result.Result;
 import common.dto.soap.response.BookingSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
+import weblogic.wsee.wstx.wsat.Transactional;
 
 @WebService(serviceName = "BookingWSB")
 public class BookingWSB {
@@ -27,49 +28,35 @@ public class BookingWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.MAKE_BOOKING)
+    @Transactional
     public SoapResponse<BookingSOAP> makeBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
-        try {
-            final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingDTO, rooms);
-            return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
+        final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingDTO, rooms);
+        return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
                     booking.isSuccess());
-        } catch (Exception e) {
-            System.out.println("BookingWSB.makeBooking: " + e.getMessage());
-            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
-        }
     }
 
     @WebMethod(operationName = WebMethodConsts.MODIFY_BOOKING)
+    @Transactional
     public SoapResponse<BookingSOAP> modifyBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
-        try {
-            final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingDTO, rooms);
-            return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
+        final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingDTO, rooms);
+        return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
                     booking.isSuccess());
-        } catch (Exception e) {
-            System.out.println("BookingWSB.modifyBooking: " + e.getMessage());
-            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
-        }
+      
     }
 
     @WebMethod(operationName = WebMethodConsts.CANCEL_BOOKING)
+    @Transactional
     public SoapResponse<Void> cancelBooking(int bookingID) {
-        try {
-            final Result<Void> booking = this.bookingAS.deleteBooking(bookingID);
-            return SoapResponseMapper.toSoapResponse(booking);
-        } catch (Exception e) {
-            System.out.println("BookingWSB.cancelBooking: " + e.getMessage());
-            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
-        }
+        final Result<Void> booking = this.bookingAS.deleteBooking(bookingID);
+        return SoapResponseMapper.toSoapResponse(booking);
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_BOOKING)
+    @Transactional
     public SoapResponse<BookingSOAP> searchBooking(int bookingID) {
-        try {
-            final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
-            return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
+        final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
+        return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
                     booking.isSuccess());
-        } catch (Exception e) {
-            System.out.println("BookingWSB.searchBooking: " + e.getMessage());
-            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
-        }
+        
     }
 }

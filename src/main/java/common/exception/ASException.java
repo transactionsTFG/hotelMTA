@@ -1,12 +1,28 @@
 package common.exception;
 
-import javax.ejb.ApplicationException;
+import javax.xml.soap.SOAPConstants;
+import javax.xml.ws.soap.SOAPFaultException;
+import javax.xml.soap.SOAPFactory;
+import javax.xml.soap.SOAPFault;
+import javax.xml.soap.SOAPException;
 
-@ApplicationException(rollback = true)
-public class ASException extends Exception {
+public class ASException extends SOAPFaultException {
     private static final long serialVersionUID = 5067456836242850281L;
 
-    public ASException(String message) {
-        super(message);
+    public ASException(String msg) {
+        super(createFault(msg));
     }
+
+    private static SOAPFault createFault(final String msg){
+		try {
+			SOAPFactory factory = SOAPFactory.newInstance();
+			SOAPFault fault = factory.createFault();
+			fault.setFaultCode(SOAPConstants.SOAP_SENDER_FAULT);
+			fault.setFaultString(msg);
+			fault.setFaultActor("Server HotelMTA");
+			return fault;
+		} catch (SOAPException e) {
+			throw new RuntimeException("Error creando SOAPFaultException", e);
+		}
+	}
 }

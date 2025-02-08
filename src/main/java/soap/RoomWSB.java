@@ -11,6 +11,7 @@ import common.dto.result.Result;
 import common.dto.soap.response.RoomSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
+import weblogic.wsee.wstx.wsat.Transactional;
 
 @WebService(serviceName = "RoomWSB")
 public class RoomWSB {
@@ -22,15 +23,11 @@ public class RoomWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOM)
+    @Transactional
     public SoapResponse<RoomSOAP> searchRoom(int roomId) {
-        try {
-            final Result<RoomDTO> room = this.roomAS.readRoom(roomId);
-            return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomSOAP.toSOAP(room.getData()),
+        final Result<RoomDTO> room = this.roomAS.readRoom(roomId);
+        return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomSOAP.toSOAP(room.getData()),
                     room.isSuccess());
-        } catch (Exception e) {
-            System.out.println("RoomWSB.searchRoom: " + e.getMessage());
-            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
-        }
     }
 
 }

@@ -14,7 +14,9 @@ import javax.transaction.Transactional;
 @Stateless
 public class RoomASImp implements RoomAS {
 
-    private final EntityManager em;
+    private EntityManager em;
+
+    public RoomASImp(){}
 
     @Inject
     public RoomASImp(EntityManager em) {
@@ -22,7 +24,6 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    @Transactional
     public Result<RoomDTO> createRoom(RoomDTO roomDTO) throws ASException {
 
         this.isValid(roomDTO);
@@ -52,7 +53,6 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    @Transactional
     public Result<RoomDTO> readRoom(int id) throws ASException {
         Room room = this.em.find(Room.class, id, LockModeType.OPTIMISTIC);
         if (room == null)
@@ -63,7 +63,6 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    @Transactional
     public Result<Void> deleteRoom(int id) throws ASException {
 
         Room room = this.em.find(Room.class, id);

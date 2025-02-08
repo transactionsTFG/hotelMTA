@@ -7,11 +7,11 @@ import common.exception.ASException;
 
 public interface BookingAS {
 
-    public Result<BookingTOA> createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) throws ASException;
+    public Result<BookingTOA> createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms);
 
-    public Result<BookingTOA> updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) throws ASException;
+    public Result<BookingTOA> updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms);
 
-    public Result<Void> deleteBooking(int id) throws ASException;
+    public Result<Void> deleteBooking(int id);
 
-    public Result<BookingTOA> readBooking(int id) throws ASException;
+    public Result<BookingTOA> readBooking(int id);
 }
