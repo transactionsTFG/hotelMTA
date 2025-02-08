@@ -9,6 +9,9 @@ public class RoomDTO {
     private boolean active;
     private int peopleNumber;
 
+    public RoomDTO(){}
+
+
     public RoomDTO(int id, int number, boolean occupied, boolean singleBed, boolean active, int peopleNumber) {
         super();
         this.id = id;

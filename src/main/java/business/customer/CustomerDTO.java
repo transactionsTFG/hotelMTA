@@ -9,6 +9,8 @@ public class CustomerDTO {
     private String dni;
     private boolean active;
 
+    public CustomerDTO(){}
+    
     public CustomerDTO(int id, String name, String email, String phone, String dni, boolean active) {
         super();
         this.id = id;
