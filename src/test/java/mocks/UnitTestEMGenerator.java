@@ -44,9 +44,9 @@ public class UnitTestEMGenerator {
     }
 
     private void bookingMock() {
-        Booking b1 = new Booking("2025-01-01", 1, false, "UCM", 1, true);
-        Booking b2 = new Booking("2025-01-02", 1, false, "UCM", 1, true);
-        Booking b3 = new Booking("2025-01-03", 1, false, "UCM", 1, true);
+        Booking b1 = new Booking("2025-01-01", 1, false, 1, true);
+        Booking b2 = new Booking("2025-01-02", 1, false, 1, true);
+        Booking b3 = new Booking("2025-01-03", 1, false, 1, true);
         this.em.persist(b1);
         this.em.persist(b2);
         this.em.persist(b3);

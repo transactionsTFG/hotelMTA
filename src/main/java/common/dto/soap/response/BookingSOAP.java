@@ -18,8 +18,6 @@ public class BookingSOAP {
     @XmlElement
     private boolean withBreakfast;
     @XmlElement
-    private String agencyName;
-    @XmlElement
     private int peopleNumber;
     @XmlElement
     private int customerId;
@@ -58,14 +56,6 @@ public class BookingSOAP {
         this.withBreakfast = withBreakfast;
     }
 
-    public String getAgencyName() {
-        return agencyName;
-    }
-
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
-    }
-
     public int getPeopleNumber() {
         return peopleNumber;
     }
@@ -93,7 +83,6 @@ public class BookingSOAP {
     public static BookingSOAP toSOAP(BookingDTO bookingDTO) {
         BookingSOAP bookingSOAP = new BookingSOAP();
         bookingSOAP.setId(bookingDTO.getId());
-        bookingSOAP.setAgencyName(bookingDTO.getAgencyName());
         bookingSOAP.setCustomerId(bookingDTO.getCustomerId());
         bookingSOAP.setDate(bookingDTO.getDate());
         bookingSOAP.setNumberOfNights(bookingDTO.getNumberOfNights());

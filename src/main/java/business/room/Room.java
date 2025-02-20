@@ -5,12 +5,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.List;
 import business.booking.Booking;
+import business.hotel.Hotel;
 
 @Entity
 @NamedQueries({
@@ -31,6 +33,10 @@ public class Room implements Serializable {
     private boolean active;
     @ManyToMany(mappedBy = "room")
     private List<Booking> booking;
+    
+    @ManyToOne
+    private Hotel hotel;
+    
     private int peopleNumber;
 
     public Room() {
@@ -107,6 +113,14 @@ public class Room implements Serializable {
 
     public void setPeopleNumber(int peopleNumber) {
         this.peopleNumber = peopleNumber;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
     public RoomDTO toDTO() {

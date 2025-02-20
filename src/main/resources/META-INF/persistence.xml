@@ -10,8 +10,8 @@
         <class>business.customer.Customer</class>
         <class>business.room.Room</class>
         <properties>
-            <property name="jakarta.persistence.jtaDataSource" value="jdbc/hotel" />
-            <!-- <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" /> -->
+            <property name="javax.persistence.jtaDataSource" value="jdbc/hotel" />
+            <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create" />-->
         </properties>
     </persistence-unit>
 </persistence>

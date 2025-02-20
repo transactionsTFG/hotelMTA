@@ -6,33 +6,30 @@ public class BookingDTO {
     private String date;
     private int numberOfNights;
     private boolean withBreakfast;
-    private String agencyName;
     private int peopleNumber;
     private int customerId;
     private boolean active;
 
     public BookingDTO(){}
 
-    public BookingDTO(int id, String date, int numberOfNights, boolean withBreakfast, String agencyName,
+    public BookingDTO(int id, String date, int numberOfNights, boolean withBreakfast,
             int peopleNumber, int customerId, boolean active) {
         super();
         this.id = id;
         this.date = date;
         this.numberOfNights = numberOfNights;
         this.withBreakfast = withBreakfast;
-        this.agencyName = agencyName;
         this.peopleNumber = peopleNumber;
         this.customerId = customerId;
         this.active = active;
     }
 
-    public BookingDTO(String date, int numberOfNights, boolean withBreakfast, String agencyName,
+    public BookingDTO(String date, int numberOfNights, boolean withBreakfast,
             int peopleNumber, int customerId) {
         super();
         this.date = date;
         this.numberOfNights = numberOfNights;
         this.withBreakfast = withBreakfast;
-        this.agencyName = agencyName;
         this.peopleNumber = peopleNumber;
         this.customerId = customerId;
         this.active = true;
@@ -68,14 +65,6 @@ public class BookingDTO {
 
     public void setWithBreakfast(boolean withBreakfast) {
         this.withBreakfast = withBreakfast;
-    }
-
-    public String getAgencyName() {
-        return agencyName;
-    }
-
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
     }
 
     public int getPeopleNumber() {
