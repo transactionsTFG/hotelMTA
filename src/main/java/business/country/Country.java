@@ -30,7 +30,7 @@ public class Country {
     private String name;
 
     @ManyToMany
-    private Set<Hotel> hotels;
+    private Set<Hotel> hotel;
 
     @Version
     private int version;

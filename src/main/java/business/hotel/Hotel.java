@@ -36,8 +36,8 @@ public class Hotel {
     @Version
     private int version;
 
-    @ManyToMany(mappedBy = "hotels")
-    private Set<Country> countries;
+    @ManyToMany(mappedBy = "hotel")
+    private Set<Country> country;
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;
