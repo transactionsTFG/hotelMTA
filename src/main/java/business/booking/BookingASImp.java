@@ -36,11 +36,13 @@ public class BookingASImp implements BookingAS {
     @Override
     public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP) {
 
+        System.out.println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------"
+                + bookingSOAP.toString());
         SOAPValidator.makeBookingRequestIsValid(bookingSOAP);
 
-        if (bookingSOAP.getRoomIds() == null || bookingSOAP.getRoomIds().isEmpty()) {
-            throw new BookingASException(ASError.INVALID_ROOM_LIST);
-        }
+        // if (bookingSOAP.getRoomIds() == null || bookingSOAP.getRoomIds().isEmpty()) {
+        // throw new BookingASException(ASError.INVALID_ROOM_LIST);
+        // }
 
         Customer customer = em.find(Customer.class, bookingSOAP.getCustomerId());
 
@@ -65,6 +67,7 @@ public class BookingASImp implements BookingAS {
                     roomsOK = false;
                 }
             }
+            System.out.println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------" + room.toString());
             roomList.add(room);
             ++i;
         }
@@ -141,7 +144,6 @@ public class BookingASImp implements BookingAS {
         booking.setCustomer(customer);
         booking.setRoom(roomList);
         booking.setPeopleNumber(bookingSOAP.getPeopleNumber());
-
 
         return Result.success(
                 new BookingTOA(booking.toDTO(), customer.toDTO(), roomList.stream().map(Room::toDTO).toList()));
