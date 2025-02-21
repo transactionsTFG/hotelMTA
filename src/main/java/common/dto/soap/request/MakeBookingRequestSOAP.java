@@ -2,57 +2,34 @@ package common.dto.soap.request;
 
 import java.util.List;
 
-import business.booking.BookingDTO;
-import business.customer.CustomerDTO;
-import business.room.RoomDTO;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "MakeBookingRequestSOAP")
 @XmlAccessorType(XmlAccessType.FIELD)
+@NoArgsConstructor
+@Data
 public class MakeBookingRequestSOAP {
     @XmlElement
-    private CustomerDTO customer;
-
+    private String date;
     @XmlElement
-    private BookingDTO booking;
-
+    private int numberOfNights;
     @XmlElement
-    private List<RoomDTO> rooms;
-
-    public MakeBookingRequestSOAP() {
-    }
-
-    public MakeBookingRequestSOAP(CustomerDTO customer, BookingDTO booking, List<RoomDTO> rooms) {
-        this.customer = customer;
-        this.booking = booking;
-        this.rooms = rooms;
-    }
-
-    public CustomerDTO getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(CustomerDTO customer) {
-        this.customer = customer;
-    }
-
-    public BookingDTO getBooking() {
-        return booking;
-    }
-
-    public void setBooking(BookingDTO booking) {
-        this.booking = booking;
-    }
-
-    public List<RoomDTO> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<RoomDTO> rooms) {
-        this.rooms = rooms;
-    }
+    private boolean withBreakfast;
+    @XmlElement
+    private String agencyName;
+    @XmlElement
+    private int peopleNumber;
+    @XmlElement
+    private int customerId;
+    @XmlElementWrapper(name = "roomIds")
+    @XmlElement(name = "room")
+    private List<Integer> roomIds;
 
 }

@@ -1,15 +1,14 @@
 package business.booking;
 
-import java.util.List;
-import business.room.RoomDTO;
 import common.dto.result.Result;
-import common.exception.ASException;
+import common.dto.soap.request.MakeBookingRequestSOAP;
+import common.dto.soap.request.ModifyBookingRequestSOAP;
 
 public interface BookingAS {
 
-    public Result<BookingTOA> createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms);
+    public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP);
 
-    public Result<BookingTOA> updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms);
+    public Result<BookingTOA> updateBooking(ModifyBookingRequestSOAP bookingSOAP);
 
     public Result<Void> deleteBooking(int id);
 

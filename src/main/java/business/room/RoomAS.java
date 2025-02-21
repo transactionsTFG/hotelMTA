@@ -8,7 +8,7 @@ public interface RoomAS {
 
     public Result<RoomDTO> createRoom(RoomDTO roomDTO);
 
-    public Result<RoomDTO> readRoom(int id);
+    public Result<RoomDTO> readRoom(int roomId);
 
     public Result<RoomDTO> readRoomByNumber(int number);
 

@@ -9,7 +9,10 @@ import business.room.Room;
 import business.room.RoomDTO;
 import common.consts.ASError;
 import common.dto.result.Result;
+import common.dto.soap.request.MakeBookingRequestSOAP;
+import common.dto.soap.request.ModifyBookingRequestSOAP;
 import common.exception.BookingASException;
+import common.validators.SOAPValidator;
 import common.validators.Validator;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -22,7 +25,8 @@ public class BookingASImp implements BookingAS {
 
     private EntityManager em;
 
-    public BookingASImp(){}
+    public BookingASImp() {
+    }
 
     @Inject
     public BookingASImp(EntityManager em) {
@@ -30,15 +34,15 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    public Result<BookingTOA> createBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
+    public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP) {
 
-        this.isValid(bookingDTO);
+        SOAPValidator.makeBookingRequestIsValid(bookingSOAP);
 
-        if (rooms == null || rooms.isEmpty()) {
+        if (bookingSOAP.getRoomIds() == null || bookingSOAP.getRoomIds().isEmpty()) {
             throw new BookingASException(ASError.INVALID_ROOM_LIST);
         }
 
-        Customer customer = em.find(Customer.class, bookingDTO.getCustomerId());
+        Customer customer = em.find(Customer.class, bookingSOAP.getCustomerId());
 
         if (customer == null) {
             throw new BookingASException(ASError.NON_EXISTENT_CUSTOMER);
@@ -50,9 +54,10 @@ public class BookingASImp implements BookingAS {
 
         int i = 0;
         boolean roomsOK = true;
-        while (i < rooms.size() && roomsOK) {
-            RoomDTO roomDTO = rooms.get(i);
-            Room room = em.find(Room.class, roomDTO.getId(), LockModeType.OPTIMISTIC);
+        List<Room> roomList = new ArrayList<>();
+        while (i < bookingSOAP.getRoomIds().size() && roomsOK) {
+            Integer roomId = bookingSOAP.getRoomIds().get(i);
+            Room room = em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
             if (room == null) {
                 roomsOK = false;
             } else {
@@ -60,6 +65,7 @@ public class BookingASImp implements BookingAS {
                     roomsOK = false;
                 }
             }
+            roomList.add(room);
             ++i;
         }
 
@@ -67,35 +73,37 @@ public class BookingASImp implements BookingAS {
             throw new BookingASException(ASError.ROOM_LIST_HAS_NON_ACTIVE_OR_NON_EXISTENT_ROOMS);
         }
 
-        Booking booking = new Booking(bookingDTO);
+        Booking booking = new Booking();
+        booking.setDate(bookingSOAP.getDate());
+        booking.setNumberOfNights(bookingSOAP.getNumberOfNights());
+        booking.setWithBreakfast(bookingSOAP.isWithBreakfast());
+        booking.setActive(true);
         booking.setCustomer(customer);
-        List<Room> roomList = new ArrayList<>();
-        for (RoomDTO r : rooms) {
-            roomList.add(new Room(r));
-        }
         booking.setRoom(roomList);
+        booking.setPeopleNumber(bookingSOAP.getPeopleNumber());
 
         em.persist(booking);
-
-        return Result.success(new BookingTOA(booking.toDTO(), customer.toDTO(), rooms));
+        em.flush();
+        return Result.success(
+                new BookingTOA(booking.toDTO(), customer.toDTO(), roomList.stream().map(Room::toDTO).toList()));
 
     }
 
     @Override
-    public Result<BookingTOA> updateBooking(BookingDTO bookingDTO, List<RoomDTO> rooms) {
-        this.isValid(bookingDTO);
+    public Result<BookingTOA> updateBooking(ModifyBookingRequestSOAP bookingSOAP) {
+        SOAPValidator.modifyBookingRequestIsValid(bookingSOAP);
 
-        Booking booking = em.find(Booking.class, bookingDTO.getId());
+        Booking booking = em.find(Booking.class, bookingSOAP.getId());
 
         if (booking == null) {
             throw new BookingASException(ASError.BOOKING_NOT_FOUND);
         }
 
-        if (rooms == null || rooms.isEmpty()) {
+        if (bookingSOAP.getRoomIds() == null || bookingSOAP.getRoomIds().isEmpty()) {
             throw new BookingASException(ASError.INVALID_ROOM_LIST);
         }
 
-        Customer customer = em.find(Customer.class, bookingDTO.getCustomerId(),
+        Customer customer = em.find(Customer.class, bookingSOAP.getCustomerId(),
                 LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 
         if (customer == null) {
@@ -108,9 +116,10 @@ public class BookingASImp implements BookingAS {
 
         int i = 0;
         boolean roomsOK = true;
-        while (i < rooms.size() && roomsOK) {
-            RoomDTO roomDTO = rooms.get(i);
-            Room room = em.find(Room.class, roomDTO.getId(), LockModeType.OPTIMISTIC);
+        List<Room> roomList = new ArrayList<>();
+        while (i < bookingSOAP.getRoomIds().size() && roomsOK) {
+            Integer roomId = bookingSOAP.getRoomIds().get(i);
+            Room room = em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
             if (room == null) {
                 roomsOK = false;
             } else {
@@ -125,20 +134,17 @@ public class BookingASImp implements BookingAS {
             throw new BookingASException(ASError.ROOM_LIST_HAS_NON_ACTIVE_OR_NON_EXISTENT_ROOMS);
         }
 
-        booking.setDate(bookingDTO.getDate());
-        booking.setNumberOfNights(bookingDTO.getNumberOfNights());
-        booking.setWithBreakfast(bookingDTO.isWithBreakfast());
+        booking.setDate(bookingSOAP.getDate());
+        booking.setNumberOfNights(bookingSOAP.getNumberOfNights());
+        booking.setWithBreakfast(bookingSOAP.isWithBreakfast());
         booking.setActive(true);
         booking.setCustomer(customer);
-        List<Room> roomList = new ArrayList<>();
-        for (RoomDTO r : rooms) {
-            roomList.add(new Room(r));
-        }
         booking.setRoom(roomList);
+        booking.setPeopleNumber(bookingSOAP.getPeopleNumber());
 
-        em.persist(booking);
 
-        return Result.success(new BookingTOA(booking.toDTO(), customer.toDTO(), rooms));
+        return Result.success(
+                new BookingTOA(booking.toDTO(), customer.toDTO(), roomList.stream().map(Room::toDTO).toList()));
 
     }
 
@@ -180,29 +186,6 @@ public class BookingASImp implements BookingAS {
 
         return Result.success(new BookingTOA(booking.toDTO(), booking.getCustomer().toDTO(),
                 booking.getRoom().stream().map(Room::toDTO).collect(Collectors.toList())));
-
-    }
-
-    private void isValid(BookingDTO booking) {
-        if (booking == null) {
-            throw new BookingASException(ASError.NON_EXISTENT_BOOKING);
-        }
-
-        if (!Validator.isDate(booking.getDate())) {
-            throw new BookingASException(ASError.INVALID_DATE);
-        }
-
-        if (booking.getCustomerId() <= 0) {
-            throw new BookingASException(ASError.INVALID_CUSTOMER_ID);
-        }
-
-        if (booking.getPeopleNumber() <= 0) {
-            throw new BookingASException(ASError.INVALID_PEOPLE_NUMBER);
-        }
-
-        if (booking.getNumberOfNights() <= 0) {
-            throw new BookingASException(ASError.INVALID_NUMBER_OF_NIGHTS);
-        }
 
     }
 
