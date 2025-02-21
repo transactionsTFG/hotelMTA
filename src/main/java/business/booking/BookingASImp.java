@@ -128,7 +128,6 @@ public class BookingASImp implements BookingAS {
         booking.setDate(bookingDTO.getDate());
         booking.setNumberOfNights(bookingDTO.getNumberOfNights());
         booking.setWithBreakfast(bookingDTO.isWithBreakfast());
-        booking.setAgencyName(bookingDTO.getAgencyName());
         booking.setActive(true);
         booking.setCustomer(customer);
         List<Room> roomList = new ArrayList<>();
@@ -191,10 +190,6 @@ public class BookingASImp implements BookingAS {
 
         if (!Validator.isDate(booking.getDate())) {
             throw new BookingASException(ASError.INVALID_DATE);
-        }
-
-        if (!Validator.isName(booking.getAgencyName())) {
-            throw new BookingASException(ASError.INVALID_AGENCY_NAME);
         }
 
         if (booking.getCustomerId() <= 0) {

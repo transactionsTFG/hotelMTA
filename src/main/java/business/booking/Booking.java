@@ -25,7 +25,6 @@ public class Booking implements Serializable {
     private String date;
     private int numberOfNights;
     private boolean withBreakfast;
-    private String agencyName;
     private boolean active;
     @ManyToOne
     private Customer customer;
@@ -42,16 +41,14 @@ public class Booking implements Serializable {
         this.setPeopleNumber(bookingDTO.getPeopleNumber());
         this.setNumberOfNights(bookingDTO.getNumberOfNights());
         this.setWithBreakfast(bookingDTO.isWithBreakfast());
-        this.setAgencyName(bookingDTO.getAgencyName());
         this.setActive(bookingDTO.isActive());
     }
 
-    public Booking(String date, int numberOfNights, boolean withBreakfast, String agencyName, int peopleNumber,
+    public Booking(String date, int numberOfNights, boolean withBreakfast, int peopleNumber,
             boolean active) {
         this.date = date;
         this.numberOfNights = numberOfNights;
         this.withBreakfast = withBreakfast;
-        this.agencyName = agencyName;
         this.peopleNumber = peopleNumber;
         this.active = active;
     }
@@ -96,14 +93,6 @@ public class Booking implements Serializable {
         this.withBreakfast = withBreakfast;
     }
 
-    public String getAgencyName() {
-        return agencyName;
-    }
-
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -137,7 +126,7 @@ public class Booking implements Serializable {
     }
 
     public BookingDTO toDTO() {
-        return new BookingDTO(id, date, numberOfNights, withBreakfast, agencyName, peopleNumber, customer.getId(),
+        return new BookingDTO(id, date, numberOfNights, withBreakfast, peopleNumber, customer.getId(),
                 active);
     }
 
