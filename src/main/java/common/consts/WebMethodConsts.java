@@ -7,6 +7,7 @@ public class WebMethodConsts {
     public static final String MODIFY_BOOKING = "modifyBooking";
     public static final String CANCEL_BOOKING = "cancelBooking";
     public static final String SEARCH_BOOKING = "searchBooking";
+    public static final String SEARCH_ROOMS = "searchRooms";
 
     private WebMethodConsts() {
     }

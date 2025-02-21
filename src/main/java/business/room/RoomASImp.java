@@ -1,5 +1,7 @@
 package business.room;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -94,6 +96,28 @@ public class RoomASImp implements RoomAS {
 
     }
 
+  
+
+    @Override
+    public List<RoomParamsDTO> readRooms(String hotelName, String countryName) {
+        TypedQuery<Object[]> query = this.em.createNamedQuery("business.room.getAllRoomsWithParams", Object[].class);
+        query.setParameter("hotelName", hotelName != null ? hotelName : null);
+        query.setParameter("countryName", countryName != null ? countryName : null);
+        List<Object[]> results = query.getResultList();
+        return results.stream()
+            .map(result -> new RoomParamsDTO(
+                    ((Room) result[0]).getId(),
+                    ((Room) result[0]).getNumber(),
+                    ((Room) result[0]).isOccupied(),
+                    ((Room) result[0]).isSingleBed(),
+                    ((Room) result[0]).isActive(),
+                    ((Room) result[0]).getPeopleNumber(),
+                    result[1] != null ? (String) result[1] : null,
+                    result[2] != null ? (String) result[2] : null
+            ))
+        .toList();
+    }
+    
     private void isValid(RoomDTO room) throws ASException {
         if (room == null)
             throw new RoomASException(ASError.NON_EXISTENT_ROOM);
