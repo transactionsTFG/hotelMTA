@@ -1,11 +1,14 @@
 package soap;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import business.room.RoomAS;
 import business.room.RoomDTO;
+import business.room.RoomParamsDTO;
 import common.consts.WebMethodConsts;
 import common.dto.result.Result;
 import common.dto.soap.response.RoomSOAP;
@@ -28,6 +31,11 @@ public class RoomWSB {
         final Result<RoomDTO> room = this.roomAS.readRoomByNumber(roomNumber);
         return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomSOAP.toSOAP(room.getData()),
                     room.isSuccess());
+    }
+
+    @WebMethod(operationName = WebMethodConsts.SEARCH_ROOMS)
+    public List<RoomParamsDTO> searchRooms(final String hotelName, final String countryName) {
+        return this.roomAS.readRooms(hotelName, countryName);
     }
 
 }
