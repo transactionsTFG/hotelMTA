@@ -55,8 +55,8 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    public Result<RoomDTO> readRoom(int id) {
-        Room room = this.em.find(Room.class, id, LockModeType.OPTIMISTIC);
+    public Result<RoomDTO> readRoom(int roomId) {
+        Room room = this.em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
         if (room == null)
             throw new RoomASException(ASError.ROOM_NOT_FOUND);
 
