@@ -30,7 +30,6 @@ public class ModifyBookingRequestSOAP {
     private int peopleNumber;
     @XmlElement
     private int customerId;
-    @XmlElementWrapper(name = "roomIds")
     @XmlElement(name = "room")
     private List<Integer> roomIds;
 }
