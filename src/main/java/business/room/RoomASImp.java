@@ -66,15 +66,11 @@ public class RoomASImp implements RoomAS {
 
     @Override
     public Result<RoomDTO> readRoomByNumber(int number) {
-        TypedQuery<Room> query = em.createNamedQuery("business.room.getByRoomNumber", Room.class);
-        query.setParameter("number", number);
-        Room room = query.getResultList().isEmpty() ? null : (Room) query.getResultList().get(0);
-
+        Room room = this.em.find(Room.class, number, LockModeType.NONE);
         if (room == null)
             throw new RoomASException(ASError.ROOM_NOT_FOUND);
 
         return Result.success(room.toDTO());
-
     }
 
     @Override
