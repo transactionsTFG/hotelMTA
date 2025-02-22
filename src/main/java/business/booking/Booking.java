@@ -11,15 +11,19 @@ import java.io.Serializable;
 import java.util.List;
 import business.customer.Customer;
 import business.room.Room;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Version
     private int version;
     private String date;
@@ -51,78 +55,6 @@ public class Booking implements Serializable {
         this.withBreakfast = withBreakfast;
         this.peopleNumber = peopleNumber;
         this.active = active;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getNumberOfNights() {
-        return numberOfNights;
-    }
-
-    public void setNumberOfNights(int numberOfNights) {
-        this.numberOfNights = numberOfNights;
-    }
-
-    public boolean isWithBreakfast() {
-        return withBreakfast;
-    }
-
-    public void setWithBreakfast(boolean withBreakfast) {
-        this.withBreakfast = withBreakfast;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public List<Room> getRoom() {
-        return room;
-    }
-
-    public void setRoom(List<Room> room) {
-        this.room = room;
-    }
-
-    public int getPeopleNumber() {
-        return peopleNumber;
-    }
-
-    public void setPeopleNumber(int peopleNumber) {
-        this.peopleNumber = peopleNumber;
     }
 
     public BookingDTO toDTO() {
