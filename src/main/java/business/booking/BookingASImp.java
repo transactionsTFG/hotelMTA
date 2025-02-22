@@ -67,7 +67,9 @@ public class BookingASImp implements BookingAS {
                     roomsOK = false;
                 }
             }
-            System.out.println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------" + room.toString());
+            System.out
+                    .println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------"
+                            + room.toString());
             roomList.add(room);
             ++i;
         }
@@ -151,7 +153,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    public Result<Void> deleteBooking(int id) {
+    public Result<Void> deleteBooking(long id) {
 
         Booking booking = em.find(Booking.class, id);
 
@@ -178,7 +180,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    public Result<BookingTOA> readBooking(int id) {
+    public Result<BookingTOA> readBooking(long id) {
 
         Booking booking = em.find(Booking.class, id);
 

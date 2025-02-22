@@ -10,7 +10,7 @@ public interface BookingAS {
 
     public Result<BookingTOA> updateBooking(ModifyBookingRequestSOAP bookingSOAP);
 
-    public Result<Void> deleteBooking(int id);
+    public Result<Void> deleteBooking(long id);
 
-    public Result<BookingTOA> readBooking(int id);
+    public Result<BookingTOA> readBooking(long id);
 }

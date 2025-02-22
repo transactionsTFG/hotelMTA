@@ -30,32 +30,35 @@ public class BookingWSB {
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> makeBooking(@WebParam(name = "booking") MakeBookingRequestSOAP bookingSOAP) {
         final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingSOAP);
-        return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
-                    booking.isSuccess());
+        return SoapResponseMapper.toSoapResponse(booking.getMessage(),
+                BookingSOAP.toSOAP(booking.getData().getBooking()),
+                booking.isSuccess());
     }
 
     @WebMethod(operationName = WebMethodConsts.MODIFY_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> modifyBooking(@WebParam(name = "booking") ModifyBookingRequestSOAP bookingSOAP) {
         final Result<BookingTOA> booking = this.bookingAS.updateBooking(bookingSOAP);
-        return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
-                    booking.isSuccess());
-      
+        return SoapResponseMapper.toSoapResponse(booking.getMessage(),
+                BookingSOAP.toSOAP(booking.getData().getBooking()),
+                booking.isSuccess());
+
     }
 
     @WebMethod(operationName = WebMethodConsts.CANCEL_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<Void> cancelBooking(@WebParam(name = "bookingID") int bookingID) {
+    public SoapResponse<Void> cancelBooking(@WebParam(name = "bookingID") long bookingID) {
         final Result<Void> booking = this.bookingAS.deleteBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking);
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<BookingSOAP> searchBooking(@WebParam(name = "bookingID")int bookingID) {
+    public SoapResponse<BookingSOAP> searchBooking(@WebParam(name = "bookingID") long bookingID) {
         final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
-        return SoapResponseMapper.toSoapResponse(booking.getMessage(), BookingSOAP.toSOAP(booking.getData().getBooking()),
-                    booking.isSuccess());
-        
+        return SoapResponseMapper.toSoapResponse(booking.getMessage(),
+                BookingSOAP.toSOAP(booking.getData().getBooking()),
+                booking.isSuccess());
+
     }
 }
