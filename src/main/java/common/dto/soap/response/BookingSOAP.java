@@ -1,6 +1,7 @@
 package common.dto.soap.response;
 
 import business.booking.BookingDTO;
+import lombok.Data;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -8,9 +9,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "BookingSOAP")
 @XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class BookingSOAP {
     @XmlElement
-    private int id;
+    private long id;
     @XmlElement
     private String date;
     @XmlElement
@@ -23,62 +25,6 @@ public class BookingSOAP {
     private int customerId;
     @XmlElement
     private boolean active;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getNumberOfNights() {
-        return numberOfNights;
-    }
-
-    public void setNumberOfNights(int numberOfNights) {
-        this.numberOfNights = numberOfNights;
-    }
-
-    public boolean isWithBreakfast() {
-        return withBreakfast;
-    }
-
-    public void setWithBreakfast(boolean withBreakfast) {
-        this.withBreakfast = withBreakfast;
-    }
-
-    public int getPeopleNumber() {
-        return peopleNumber;
-    }
-
-    public void setPeopleNumber(int peopleNumber) {
-        this.peopleNumber = peopleNumber;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
     public static BookingSOAP toSOAP(BookingDTO bookingDTO) {
         BookingSOAP bookingSOAP = new BookingSOAP();
