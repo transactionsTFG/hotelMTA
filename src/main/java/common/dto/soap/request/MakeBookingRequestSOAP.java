@@ -29,7 +29,7 @@ public class MakeBookingRequestSOAP {
     private int peopleNumber;
     @XmlElement
     private int customerId;
-    @XmlElement(name = "room")
+    @XmlElement(name = "roomId")
     private List<Integer> roomIds;
 
 }

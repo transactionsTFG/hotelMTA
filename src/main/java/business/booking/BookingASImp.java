@@ -60,18 +60,15 @@ public class BookingASImp implements BookingAS {
         while (i < bookingSOAP.getRoomIds().size() && roomsOK) {
             Integer roomId = bookingSOAP.getRoomIds().get(i);
             Room room = em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
-            if (room == null) {
+            if (room == null || !room.isActive() || room.isOccupied()) {
                 roomsOK = false;
-            } else {
-                if (roomsOK && !room.isActive()) {
-                    roomsOK = false;
-                }
             }
             System.out
                     .println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------"
                             + room.toString());
             roomList.add(room);
             ++i;
+
         }
 
         if (!roomsOK) {
@@ -125,12 +122,8 @@ public class BookingASImp implements BookingAS {
         while (i < bookingSOAP.getRoomIds().size() && roomsOK) {
             Integer roomId = bookingSOAP.getRoomIds().get(i);
             Room room = em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
-            if (room == null) {
+            if (room == null || !room.isActive() || room.isOccupied()) {
                 roomsOK = false;
-            } else {
-                if (roomsOK && !room.isActive()) {
-                    roomsOK = false;
-                }
             }
             ++i;
         }
