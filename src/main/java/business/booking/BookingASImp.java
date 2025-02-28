@@ -89,16 +89,6 @@ public class BookingASImp implements BookingAS {
             System.out
                     .println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------"
                             + room.toString());
-            room.getBookingLines().forEach(b -> {
-                if (b.getStartDate().compareTo(bookingSOAP.getStartDate()) <= 0
-                        && b.getEndDate().compareTo(bookingSOAP.getEndDate()) >= 0) {
-                    throw new BookingASException(ASError.ROOM_ALREADY_BOOKED);
-                }
-            });
-
-            System.out
-                    .println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------"
-                            + room.toString());
 
             BookingLine bookingLine = new BookingLine();
             bookingLine.setStartDate(bookingSOAP.getStartDate());
@@ -164,6 +154,7 @@ public class BookingASImp implements BookingAS {
         }
 
         List<BookingLine> bookingLines = booking.getBookingLines();
+        double totalPrice = booking.getTotalPrice();
         for (Long roomId : bookingSOAP.getRoomIds()) {
             Room room = em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
 
@@ -176,40 +167,81 @@ public class BookingASImp implements BookingAS {
             }
 
             TypedQuery<BookingLine> query = em.createNamedQuery(
-                    "business.bookingLine.BookingLine.findByRoomId",
-                    BookingLine.class);
+                    "business.bookingLine.BookingLine.findByBookingIdAndRoomId", BookingLine.class);
+            query.setParameter("bookingId", booking.getId());
             query.setParameter("roomId", roomId);
             List<BookingLine> bookingLinesRoom = query.getResultList();
+            System.out.println(
+                    "hotelMTA.BookingASImpl.createBooking---------------------------------------------------- lineas de reserva para bookingId "
+                            + booking.getId() + " y roomId " + roomId + ": " + bookingLinesRoom.size());
 
-            bookingLinesRoom.forEach(b -> {
-                if (b.isAvailable() && b.getStartDate().compareTo(bookingSOAP.getStartDate()) <= 0
-                        && b.getEndDate().compareTo(bookingSOAP.getEndDate()) >= 0) {
-                    throw new BookingASException(ASError.ROOM_ALREADY_BOOKED);
-                }
-            });
+            if (bookingLinesRoom.isEmpty()) {
 
-            // room.getBookingLines().forEach(b -> {
-            // if (b.getStartDate().compareTo(bookingSOAP.getStartDate()) <= 0
-            // && b.getEndDate().compareTo(bookingSOAP.getEndDate()) >= 0) {
-            // throw new BookingASException(ASError.ROOM_ALREADY_BOOKED);
-            // }
+                TypedQuery<BookingLine> query2 = em.createNamedQuery(
+                        "business.bookingLine.BookingLine.findByRoomId",
+                        BookingLine.class);
+                query2.setParameter("roomId", roomId);
+                List<BookingLine> bookingLinesRoom2 = query2.getResultList();
+
+                bookingLinesRoom2.forEach(b -> {
+                    if (!b.isAvailable())
+                        return;
+                    DateValidator.validateDates(bookingSOAP.getStartDate(), bookingSOAP.getEndDate(), b.getStartDate(),
+                            b.getEndDate());
+
+                });
+
+                System.out.println(
+                        "hotelMTA.BookingASImpl.createBooking---------------------------------------------------- añadiendo nueva linea reserva para bookingId "
+                                + booking.getId() + " y roomId " + roomId);
+                BookingLine bookingLine = new BookingLine();
+                bookingLine.setStartDate(bookingSOAP.getStartDate());
+                bookingLine.setEndDate(bookingSOAP.getEndDate());
+                bookingLine.setNumberOfNights(bookingSOAP.getNumberOfNights());
+                bookingLine.setRoomDailyPrice(room.getDailyPrice());
+                bookingLine.setAvailable(true);
+                bookingLine.setRoom(room);
+                bookingLine.setBooking(booking);
+                em.persist(bookingLine);
+                bookingLinesRoom.add(bookingLine);
+                booking.getBookingLines().add(bookingLine);
+                room.getBookingLines().add(bookingLine);
+            } else {
+                bookingLinesRoom.forEach(b -> {
+                    if (b.getBooking().getId() == booking.getId() && b.getRoom().getId() == roomId) {
+                        b.setStartDate(bookingSOAP.getStartDate());
+                        b.setEndDate(bookingSOAP.getEndDate());
+                        b.setNumberOfNights(bookingSOAP.getNumberOfNights());
+                        b.setRoomDailyPrice(room.getDailyPrice());
+                        b.setAvailable(true);
+                    }
+                });
+            }
+
+            // bookingLines.forEach(b -> {
+            // if (!b.isAvailable())
+            // return;
+            // DateValidator.validateDates(bookingSOAP.getStartDate(),
+            // bookingSOAP.getEndDate(), b.getStartDate(),
+            // b.getEndDate());
             // });
 
             System.out
                     .println("hotelMTA.BookingASImpl.createBooking----------------------------------------------------"
                             + room.toString());
 
-            BookingLine bookingLine = new BookingLine();
-            bookingLine.setStartDate(bookingSOAP.getStartDate());
-            bookingLine.setEndDate(bookingSOAP.getEndDate());
-            bookingLine.setNumberOfNights(bookingSOAP.getNumberOfNights());
-            bookingLine.setRoomDailyPrice(room.getDailyPrice());
-            bookingLine.setAvailable(true);
-            bookingLine.setRoom(room);
-            bookingLine.setBooking(booking);
-            bookingLines.add(bookingLine);
-            em.persist(bookingLine);
-            room.getBookingLines().add(bookingLine);
+            // BookingLine bookingLine = new BookingLine();
+            // bookingLine.setStartDate(bookingSOAP.getStartDate());
+            // bookingLine.setEndDate(bookingSOAP.getEndDate());
+            // bookingLine.setNumberOfNights(bookingSOAP.getNumberOfNights());
+            // bookingLine.setRoomDailyPrice(room.getDailyPrice());
+            // bookingLine.setAvailable(true);
+            // bookingLine.setRoom(room);
+            // bookingLine.setBooking(booking);
+            // bookingLines.add(bookingLine);
+            // em.persist(bookingLine);
+            // room.getBookingLines().add(bookingLine);
+            totalPrice += bookingSOAP.getNumberOfNights() * room.getDailyPrice();
         }
 
         booking.setWithBreakfast(bookingSOAP.isWithBreakfast());
@@ -217,8 +249,8 @@ public class BookingASImp implements BookingAS {
         booking.setCustomer(customer);
         booking.setBookingLines(bookingLines);
         booking.setPeopleNumber(bookingSOAP.getPeopleNumber());
+        booking.setTotalPrice(totalPrice);
 
-        em.persist(booking);
         em.flush();
         return Result.success(
                 new BookingTOA(BookingMapper.toDTO(booking),
