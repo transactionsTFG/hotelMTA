@@ -13,8 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import business.bookingline.BookingLine;
 import business.customer.Customer;
-import business.room.BookingLine;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

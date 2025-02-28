@@ -12,6 +12,7 @@ import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.List;
 
+import business.bookingline.BookingLine;
 import business.hotel.Hotel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,16 +1,17 @@
-package business.room;
+package business.bookingline;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import business.booking.Booking;
+import business.room.Room;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "business.bookingLine.BookingLine.findByBookingIdAndRoomId", query = "SELECT b FROM BookingLine b WHERE b.id.bookingId = :bookingId AND b.id.roomId = :roomId"),
+    @NamedQuery(name = "business.bookingLine.BookingLine.findByRoomId", query = "SELECT b FROM BookingLine b WHERE b.id.roomId = :roomId"),
+})
 public class BookingLine implements Serializable {
 
     @EmbeddedId
@@ -40,9 +45,9 @@ public class BookingLine implements Serializable {
 
     private double roomDailyPrice;
 
-    private LocalDate startDate;
+    private String startDate;
 
-    private LocalDate endDate;
+    private String endDate;
 
     @Column(columnDefinition = "boolean default true")
     private boolean available;
