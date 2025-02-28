@@ -1,5 +1,6 @@
 package common.dto.soap.request;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Data;
@@ -17,14 +18,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Data
 @ToString
 public class MakeBookingRequestSOAP {
+
     @XmlElement
-    private String date;
+    private LocalDate startDate;
+    @XmlElement
+    private LocalDate endDate;
     @XmlElement
     private int numberOfNights;
     @XmlElement
     private boolean withBreakfast;
-    @XmlElement
-    private String agencyName;
     @XmlElement
     private int peopleNumber;
     @XmlElement

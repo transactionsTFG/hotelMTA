@@ -10,49 +10,52 @@ import javax.persistence.TypedQuery;
 
 import common.consts.ASError;
 import common.dto.result.Result;
-import common.exception.ASException;
 import common.exception.RoomASException;
+import common.mapper.RoomMapper;
 
 @Stateless
 public class RoomASImp implements RoomAS {
 
     private EntityManager em;
 
-    public RoomASImp(){}
+    public RoomASImp() {
+    }
 
     @Inject
     public RoomASImp(EntityManager em) {
         this.em = em;
     }
 
-    @Override
-    public Result<RoomDTO> createRoom(RoomDTO roomDTO) {
+    // @Override
+    // public Result<RoomDTO> createRoom(RoomDTO roomDTO) {
 
-        this.isValid(roomDTO);
+    // this.isValid(roomDTO);
 
-        TypedQuery<Room> query = em.createNamedQuery("business.room.getByRoomNumber", Room.class);
-        query.setParameter("number", roomDTO.getNumber());
-        Room room = query.getResultList().isEmpty() ? null : query.getResultList().get(0); 
-        
-        if (room == null) {
-            room = new Room(roomDTO);
-            em.persist(room);
-            return Result.success(room.toDTO());
-        }
+    // TypedQuery<Room> query = em.createNamedQuery("business.room.getByRoomNumber",
+    // Room.class);
+    // query.setParameter("number", roomDTO.getNumber());
+    // Room room = query.getResultList().isEmpty() ? null :
+    // query.getResultList().get(0);
 
-        if (room.isActive()) {
-            throw new ASException(ASError.ACTIVE_ROOM);
-        }
+    // if (room == null) {
+    // room = new Room(roomDTO);
+    // em.persist(room);
+    // return Result.success(room.toDTO());
+    // }
 
-        room.setActive(true);
-        room.setNumber(roomDTO.getNumber());
-        room.setOccupied(roomDTO.isOccupied());
-        room.setPeopleNumber(roomDTO.getPeopleNumber());
-        room.setSingleBed(roomDTO.isSingleBed());
-        em.persist(room);
-        return Result.success(room.toDTO());
+    // if (room.isAvailable()) {
+    // throw new ASException(ASError.ACTIVE_ROOM);
+    // }
 
-    }
+    // room.setAvailable(true);
+    // room.setNumber(roomDTO.getNumber());
+    // room.setOccupied(roomDTO.isOccupied());
+    // room.setPeopleNumber(roomDTO.getPeopleNumber());
+    // room.setSingleBed(roomDTO.isSingleBed());
+    // em.persist(room);
+    // return Result.success(room.toDTO());
+
+    // }
 
     @Override
     public Result<RoomDTO> readRoom(int roomId) {
@@ -60,39 +63,37 @@ public class RoomASImp implements RoomAS {
         if (room == null)
             throw new RoomASException(ASError.ROOM_NOT_FOUND);
 
-        return Result.success(room.toDTO());
+        return Result.success(RoomMapper.toDTO(room));
 
     }
 
-    @Override
-    public Result<RoomDTO> readRoomByNumber(int number) {
-        Room room = this.em.find(Room.class, number, LockModeType.NONE);
-        if (room == null)
-            throw new RoomASException(ASError.ROOM_NOT_FOUND);
+    // @Override
+    // public Result<RoomDTO> readRoomByNumber(int number) {
+    // Room room = this.em.find(Room.class, number, LockModeType.NONE);
+    // if (room == null)
+    // throw new RoomASException(ASError.ROOM_NOT_FOUND);
 
-        return Result.success(room.toDTO());
-    }
+    // return Result.success(room.toDTO());
+    // }
 
-    @Override
-    public Result<Void> deleteRoom(int id) {
+    // @Override
+    // public Result<Void> deleteRoom(int id) {
 
-        Room room = this.em.find(Room.class, id);
+    // Room room = this.em.find(Room.class, id);
 
-        if (room == null) {
-            throw new RoomASException(ASError.ROOM_NOT_FOUND);
-        }
+    // if (room == null) {
+    // throw new RoomASException(ASError.ROOM_NOT_FOUND);
+    // }
 
-        if (!room.isActive()) {
-            throw new RoomASException(ASError.NON_ACTIVE_ROOM);
-        }
+    // if (!room.isAvailable()) {
+    // throw new RoomASException(ASError.NON_ACTIVE_ROOM);
+    // }
 
-        room.setActive(false);
+    // room.setAvailable(false);
 
-        return Result.success(null);
+    // return Result.success(null);
 
-    }
-
-  
+    // }
 
     @Override
     public List<RoomParamsDTO> readRooms(String hotelName, String countryName) {
@@ -101,27 +102,26 @@ public class RoomASImp implements RoomAS {
         query.setParameter("countryName", countryName != null ? countryName : null);
         List<Object[]> results = query.getResultList();
         return results.stream()
-            .map(result -> new RoomParamsDTO(
-                    ((Room) result[0]).getId(),
-                    ((Room) result[0]).getNumber(),
-                    ((Room) result[0]).isOccupied(),
-                    ((Room) result[0]).isSingleBed(),
-                    ((Room) result[0]).isActive(),
-                    ((Room) result[0]).getPeopleNumber(),
-                    result[1] != null ? (String) result[1] : null,
-                    result[2] != null ? (String) result[2] : null
-            ))
-        .toList();
+                .map(result -> new RoomParamsDTO(
+                        ((Room) result[0]).getId(),
+                        ((Room) result[0]).getNumber(),
+                        ((Room) result[0]).isSingleBed(),
+                        ((Room) result[0]).isAvailable(),
+                        ((Room) result[0]).getPeopleNumber(),
+                        ((Room) result[0]).getDailyPrice(),
+                        result[1] != null ? (String) result[1] : null,
+                        result[2] != null ? (String) result[2] : null))
+                .toList();
     }
-    
-    private void isValid(RoomDTO room) throws ASException {
-        if (room == null)
-            throw new RoomASException(ASError.NON_EXISTENT_ROOM);
 
-        if (room.getNumber() < 0)
-            throw new RoomASException(ASError.INVALID_ROOM_NUMBER);
+    // private void isValid(RoomDTO room) throws ASException {
+    //     if (room == null)
+    //         throw new RoomASException(ASError.NON_EXISTENT_ROOM);
 
-        if (room.getPeopleNumber() <= 0)
-            throw new RoomASException(ASError.INVALID_PEOPLE_NUMBER);
-    }
+    //     if (room.getNumber() < 0)
+    //         throw new RoomASException(ASError.INVALID_ROOM_NUMBER);
+
+    //     if (room.getPeopleNumber() <= 0)
+    //         throw new RoomASException(ASError.INVALID_PEOPLE_NUMBER);
+    // }
 }

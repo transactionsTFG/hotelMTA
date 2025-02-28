@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import business.room.RoomAS;
@@ -14,8 +13,8 @@ import common.consts.WebMethodConsts;
 import common.dto.result.Result;
 import common.dto.soap.response.RoomSOAP;
 import common.dto.soap.response.SoapResponse;
+import common.mapper.RoomMapper;
 import common.mapper.SoapResponseMapper;
-import weblogic.wsee.wstx.wsat.Transactional;
 
 @WebService(serviceName = "RoomWSB")
 public class RoomWSB {
@@ -27,10 +26,12 @@ public class RoomWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOM)
-    public SoapResponse<RoomSOAP> searchRoom(int roomNumber) {
-        final Result<RoomDTO> room = this.roomAS.readRoomByNumber(roomNumber);
-        return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomSOAP.toSOAP(room.getData()),
-                room.isSuccess());
+    public SoapResponse<RoomSOAP> searchRoom(int roomId) {
+        final Result<RoomDTO> room = this.roomAS.readRoom(roomId);
+        return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomMapper.fromDTOToRoomSOAP(room.getData()), room.isSuccess());
+        // return SoapResponseMapper.toSoapResponse(room.getMessage(),
+        //         RoomMapper.fromDTOToRoomSOAP(room.getData()),
+        //         room.isSuccess());
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOMS)

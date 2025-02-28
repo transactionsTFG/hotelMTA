@@ -13,6 +13,7 @@ import common.dto.soap.request.MakeBookingRequestSOAP;
 import common.dto.soap.request.ModifyBookingRequestSOAP;
 import common.dto.soap.response.BookingSOAP;
 import common.dto.soap.response.SoapResponse;
+import common.mapper.BookingMapper;
 import common.mapper.SoapResponseMapper;
 import weblogic.wsee.wstx.wsat.Transactional;
 
@@ -31,7 +32,8 @@ public class BookingWSB {
     public SoapResponse<BookingSOAP> makeBooking(@WebParam(name = "booking") MakeBookingRequestSOAP bookingSOAP) {
         final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingSOAP);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
-                BookingSOAP.toSOAP(booking.getData().getBooking()),
+                BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
+                // BookingSOAP.toSOAP(booking.getData().getBooking()),
                 booking.isSuccess());
     }
 
@@ -40,15 +42,16 @@ public class BookingWSB {
     public SoapResponse<BookingSOAP> modifyBooking(@WebParam(name = "booking") ModifyBookingRequestSOAP bookingSOAP) {
         final Result<BookingTOA> booking = this.bookingAS.updateBooking(bookingSOAP);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
-                BookingSOAP.toSOAP(booking.getData().getBooking()),
+                BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
+                // BookingSOAP.toSOAP(booking.getData().getBooking()),
                 booking.isSuccess());
 
     }
 
     @WebMethod(operationName = WebMethodConsts.CANCEL_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<Void> cancelBooking(@WebParam(name = "bookingID") long bookingID) {
-        final Result<Void> booking = this.bookingAS.deleteBooking(bookingID);
+    public SoapResponse<Double> cancelBooking(@WebParam(name = "bookingID") long bookingID) {
+        final Result<Double> booking = this.bookingAS.deleteBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking);
     }
 
@@ -57,7 +60,8 @@ public class BookingWSB {
     public SoapResponse<BookingSOAP> searchBooking(@WebParam(name = "bookingID") long bookingID) {
         final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
-                BookingSOAP.toSOAP(booking.getData().getBooking()),
+                BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
+                // BookingSOAP.toSOAP(booking.getData().getBooking()),
                 booking.isSuccess());
 
     }

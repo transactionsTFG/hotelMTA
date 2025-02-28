@@ -3,29 +3,19 @@ package business.booking;
 import java.util.List;
 import business.customer.CustomerDTO;
 import business.room.RoomDTO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class BookingTOA {
 
-    private final BookingDTO booking;
-    private final CustomerDTO customer;
-    private final List<RoomDTO> rooms;
+    private BookingDTO booking;
 
-    public BookingTOA(BookingDTO booking, CustomerDTO customer, List<RoomDTO> rooms) {
-        this.booking = booking;
-        this.customer = customer;
-        this.rooms = rooms;
-    }
+    private CustomerDTO customer;
 
-    public BookingDTO getBooking() {
-        return booking;
-    }
-
-    public CustomerDTO getCustomer() {
-        return customer;
-    }
-
-    public List<RoomDTO> getRooms() {
-        return rooms;
-    }
+    private List<RoomDTO> rooms;
 
 }

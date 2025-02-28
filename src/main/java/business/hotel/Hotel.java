@@ -1,6 +1,5 @@
 package business.hotel;
 
-
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +27,7 @@ import lombok.Setter;
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(unique = true, nullable = false)
     private String name;
@@ -37,7 +36,7 @@ public class Hotel {
     private int version;
 
     @ManyToMany(mappedBy = "hotel")
-    private Set<Country> country;
+    private Set<Country> countries;
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;

@@ -6,13 +6,13 @@ import common.dto.result.Result;
 
 public interface RoomAS {
 
-    public Result<RoomDTO> createRoom(RoomDTO roomDTO);
+    // public Result<RoomDTO> createRoom(RoomDTO roomDTO);
 
     public Result<RoomDTO> readRoom(int roomId);
 
-    public Result<RoomDTO> readRoomByNumber(int number);
+    // public Result<RoomDTO> readRoomByNumber(int number);
 
-    public Result<Void> deleteRoom(int id);
+    // public Result<Void> deleteRoom(int id);
 
     List<RoomParamsDTO> readRooms(final String hotelName, final String countryName);
 }

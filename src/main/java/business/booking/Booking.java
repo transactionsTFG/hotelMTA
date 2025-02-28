@@ -1,22 +1,32 @@
 package business.booking;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+
 import business.customer.Customer;
-import business.room.Room;
+import business.room.BookingLine;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 0;
@@ -26,40 +36,21 @@ public class Booking implements Serializable {
     private long id;
     @Version
     private int version;
-    private String date;
-    private int numberOfNights;
-    private boolean withBreakfast;
-    private boolean active;
+
     @ManyToOne
     private Customer customer;
-    @ManyToMany
-    private List<Room> room;
+
+    @OneToMany(mappedBy = "booking")
+    private List<BookingLine> bookingLines;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean withBreakfast;
+
     private int peopleNumber;
 
-    public Booking() {
-    }
+    @Column(columnDefinition = "boolean default true")
+    private boolean available;
 
-    public Booking(BookingDTO bookingDTO) {
-        this.setId(bookingDTO.getId());
-        this.setDate(bookingDTO.getDate());
-        this.setPeopleNumber(bookingDTO.getPeopleNumber());
-        this.setNumberOfNights(bookingDTO.getNumberOfNights());
-        this.setWithBreakfast(bookingDTO.isWithBreakfast());
-        this.setActive(bookingDTO.isActive());
-    }
-
-    public Booking(String date, int numberOfNights, boolean withBreakfast, int peopleNumber,
-            boolean active) {
-        this.date = date;
-        this.numberOfNights = numberOfNights;
-        this.withBreakfast = withBreakfast;
-        this.peopleNumber = peopleNumber;
-        this.active = active;
-    }
-
-    public BookingDTO toDTO() {
-        return new BookingDTO(id, date, numberOfNights, withBreakfast, peopleNumber, customer.getId(),
-                active);
-    }
+    private double totalPrice;
 
 }
