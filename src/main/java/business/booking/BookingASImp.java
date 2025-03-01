@@ -272,17 +272,19 @@ public class BookingASImp implements BookingAS {
             throw new BookingASException(ASError.NON_ACTIVE_BOOKING);
         }
 
+        final double totalPrice = booking.getTotalPrice();
+
+        System.out.println(
+                "hotelMTA.BookingASImpl.deleteBooking---------------------------------------------------- 'borrando' todas las booking lines de bookingId "
+                        + booking.getId());
+        booking.getBookingLines().stream().forEach(b -> {
+            b.setAvailable(false);
+        });
+
         booking.setAvailable(false);
+        booking.setTotalPrice(0);
 
-        // for (Room r : booking.getRooms()) {
-        // em.lock(r, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        // r.setOccupied(false);
-        // booking.getRoom().remove(r);
-        // }
-
-        em.persist(booking);
-
-        return Result.success(booking.getTotalPrice());
+        return Result.success(totalPrice);
 
     }
 
