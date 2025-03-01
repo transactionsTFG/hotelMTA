@@ -55,6 +55,13 @@ public class BookingWSB {
         return SoapResponseMapper.toSoapResponse(booking);
     }
 
+    @WebMethod(operationName = WebMethodConsts.CANCEL_BOOKING_LINE)
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
+    public SoapResponse<Double> cancelBookingLine(@WebParam(name = "bookingID") long bookingID, @WebParam(name = "roomID") long roomID) {
+        final Result<Double> booking = this.bookingAS.deleteBookingLine(bookingID, roomID);
+        return SoapResponseMapper.toSoapResponse(booking);
+    }
+
     @WebMethod(operationName = WebMethodConsts.SEARCH_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> searchBooking(@WebParam(name = "bookingID") long bookingID) {

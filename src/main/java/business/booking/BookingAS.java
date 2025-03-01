@@ -12,5 +12,7 @@ public interface BookingAS {
 
     public Result<Double> deleteBooking(long id);
 
+    public Result<Double> deleteBookingLine(long bookingId, long roomId);
+
     public Result<BookingTOA> readBooking(long id);
 }

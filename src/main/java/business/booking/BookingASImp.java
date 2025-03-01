@@ -287,6 +287,45 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
+    public Result<Double> deleteBookingLine(long bookingId, long roomId) {
+
+        Booking booking = em.find(Booking.class, bookingId);
+
+        if (booking == null) {
+            throw new BookingASException(ASError.BOOKING_NOT_FOUND);
+        }
+
+        if (!booking.isAvailable()) {
+            throw new BookingASException(ASError.NON_ACTIVE_BOOKING);
+        }
+
+        Room room = em.find(Room.class, roomId);
+
+        if (room == null) {
+            throw new BookingASException(ASError.NON_EXISTENT_ROOM);
+        }
+
+        if (!room.isAvailable()) {
+            throw new BookingASException(ASError.NON_ACTIVE_ROOM);
+        }
+
+        TypedQuery<BookingLine> query = em.createNamedQuery("business.bookingLine.BookingLine.findByBookingIdAndRoomId",
+                BookingLine.class);
+        query.setParameter("bookingId", bookingId);
+        query.setParameter("roomId", roomId);
+        List<BookingLine> bookingLines = query.getResultList();
+
+        bookingLines.stream().forEach(b -> {
+            if (!b.isAvailable())
+                return;
+            b.setAvailable(false);
+            booking.setTotalPrice(b.getRoomDailyPrice() * b.getNumberOfNights());
+        });
+
+        return Result.success(booking.getTotalPrice());
+    }
+
+    @Override
     public Result<BookingTOA> readBooking(long id) {
 
         Booking booking = em.find(Booking.class, id);
