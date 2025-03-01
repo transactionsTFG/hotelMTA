@@ -11,9 +11,7 @@ import business.room.RoomDTO;
 import business.room.RoomParamsDTO;
 import common.consts.WebMethodConsts;
 import common.dto.result.Result;
-import common.dto.soap.response.RoomSOAP;
 import common.dto.soap.response.SoapResponse;
-import common.mapper.RoomMapper;
 import common.mapper.SoapResponseMapper;
 
 @WebService(serviceName = "RoomWSB")
@@ -26,12 +24,9 @@ public class RoomWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOM)
-    public SoapResponse<RoomSOAP> searchRoom(int roomId) {
-        final Result<RoomDTO> room = this.roomAS.readRoom(roomId);
-        return SoapResponseMapper.toSoapResponse(room.getMessage(), RoomMapper.fromDTOToRoomSOAP(room.getData()), room.isSuccess());
-        // return SoapResponseMapper.toSoapResponse(room.getMessage(),
-        //         RoomMapper.fromDTOToRoomSOAP(room.getData()),
-        //         room.isSuccess());
+    public RoomDTO searchRoom(long roomId) {
+        final RoomDTO room = this.roomAS.readRoom(roomId);
+        return room;
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOMS)

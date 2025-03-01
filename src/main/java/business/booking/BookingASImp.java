@@ -112,7 +112,7 @@ public class BookingASImp implements BookingAS {
         return Result.success(
                 new BookingTOA(BookingMapper.toDTO(booking),
                         CustomerMapper.toDTO(customer),
-                        bookingLines.stream().map(b -> RoomMapper.toDTO(b.getRoom())).toList()));
+                        bookingLines.stream().map(b -> RoomMapper.INSTANCE.toDTO(b.getRoom())).toList()));
 
     }
 
@@ -214,7 +214,7 @@ public class BookingASImp implements BookingAS {
         return Result.success(
                 new BookingTOA(BookingMapper.toDTO(booking),
                         CustomerMapper.toDTO(customer),
-                        bookingLines.stream().map(b -> RoomMapper.toDTO(b.getRoom())).toList()));
+                        bookingLines.stream().map(b -> RoomMapper.INSTANCE.toDTO(b.getRoom())).toList()));
 
     }
 
@@ -306,7 +306,7 @@ public class BookingASImp implements BookingAS {
         return Result.success(
                 new BookingTOA(BookingMapper.toDTO(booking),
                         CustomerMapper.toDTO(booking.getCustomer()),
-                        booking.getBookingLines().stream().map(b -> RoomMapper.toDTO(b.getRoom())).toList()));
+                        booking.getBookingLines().stream().map(b -> RoomMapper.INSTANCE.toDTO(b.getRoom())).toList()));
 
     }
 
