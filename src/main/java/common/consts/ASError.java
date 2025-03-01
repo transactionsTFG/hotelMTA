@@ -12,6 +12,7 @@ public class ASError {
     public static final String INVALID_ROOM_LIST = "Invalid room list";
     public static final String ROOM_LIST_HAS_NON_ACTIVE_OR_NON_EXISTENT_ROOMS = "Room list has non active or non existent rooms";
     public static final String NON_ACTIVE_BOOKING = "Non active booking";
+    public static final String ROOM_ALREADY_BOOKED = "Room is already booked";
 
     // ROOM
     public static final String ROOM_NOT_FOUND = "Room not found";

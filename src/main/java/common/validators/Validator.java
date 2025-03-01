@@ -1,14 +1,16 @@
 package common.validators;
 
+import java.time.LocalDate;
+
 public class Validator {
 
     // DD-MM-YYYY
-    public static boolean isDate(String date) {
-        if (isBlankOrEmpty(date)) {
+    public static boolean isDate(LocalDate date) {
+        if (date == null || isBlankOrEmpty(date.toString())) {
             return false;
         }
 
-        return date.matches("\\d{2}-\\d{2}-\\d{4}");
+        return new StringBuilder(date.toString()).reverse().toString().matches("\\d{2}-\\d{2}-\\d{4}");
     }
 
     public static boolean isEmail(String email) {

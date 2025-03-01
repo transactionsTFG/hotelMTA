@@ -11,10 +11,6 @@ public class SOAPValidator {
             throw new BookingASException(ASError.NON_EXISTENT_BOOKING);
         }
 
-        if (!Validator.isDate(booking.getDate())) {
-            throw new BookingASException(ASError.INVALID_DATE);
-        }
-
         if (booking.getCustomerId() <= 0) {
             throw new BookingASException(ASError.INVALID_CUSTOMER_ID);
         }
@@ -31,10 +27,6 @@ public class SOAPValidator {
     public static boolean modifyBookingRequestIsValid(ModifyBookingRequestSOAP booking) {
         if (booking == null || booking.getId() <= 0) {
             throw new BookingASException(ASError.NON_EXISTENT_BOOKING);
-        }
-
-        if (!Validator.isDate(booking.getDate())) {
-            throw new BookingASException(ASError.INVALID_DATE);
         }
 
         if (booking.getCustomerId() <= 0) {

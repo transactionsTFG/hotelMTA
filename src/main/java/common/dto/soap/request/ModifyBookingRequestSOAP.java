@@ -1,5 +1,7 @@
 package common.dto.soap.request;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -18,17 +20,17 @@ public class ModifyBookingRequestSOAP {
     @XmlElement
     private long id;
     @XmlElement
-    private String date;
+    private String startDate;
+    @XmlElement
+    private String endDate;
     @XmlElement
     private int numberOfNights;
     @XmlElement
     private boolean withBreakfast;
     @XmlElement
-    private String agencyName;
-    @XmlElement
     private int peopleNumber;
     @XmlElement
-    private int customerId;
-    @XmlElement(name = "room")
-    private List<Integer> roomIds;
+    private long customerId;
+    @XmlElement(name = "roomId")
+    private List<Long> roomIds;
 }
