@@ -317,14 +317,25 @@ public class BookingASImp implements BookingAS {
         query.setParameter("roomId", roomId);
         List<BookingLine> bookingLines = query.getResultList();
 
+        double totalPrice = booking.getTotalPrice();
+
         bookingLines.stream().forEach(b -> {
             if (!b.isAvailable())
                 return;
-            b.setAvailable(false);
-            booking.setTotalPrice(b.getRoomDailyPrice() * b.getNumberOfNights());
+            if (b.getBooking().getId() == bookingId && b.getRoom().getId() == roomId) {
+                b.setAvailable(false);
+                booking.setTotalPrice(booking.getTotalPrice() - b.getRoomDailyPrice() * b.getNumberOfNights());
+            }
         });
 
-        return Result.success(booking.getTotalPrice());
+        totalPrice -= booking.getTotalPrice();
+
+        if (booking.getTotalPrice() <= 0) {
+            booking.setTotalPrice(0);
+            booking.setAvailable(false);
+        }
+
+        return Result.success(totalPrice);
     }
 
     @Override
