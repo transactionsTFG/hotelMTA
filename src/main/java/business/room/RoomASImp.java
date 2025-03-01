@@ -9,7 +9,6 @@ import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
 
 import common.consts.ASError;
-import common.dto.result.Result;
 import common.exception.RoomASException;
 import common.mapper.RoomMapper;
 
@@ -26,74 +25,15 @@ public class RoomASImp implements RoomAS {
         this.em = em;
     }
 
-    // @Override
-    // public Result<RoomDTO> createRoom(RoomDTO roomDTO) {
-
-    // this.isValid(roomDTO);
-
-    // TypedQuery<Room> query = em.createNamedQuery("business.room.getByRoomNumber",
-    // Room.class);
-    // query.setParameter("number", roomDTO.getNumber());
-    // Room room = query.getResultList().isEmpty() ? null :
-    // query.getResultList().get(0);
-
-    // if (room == null) {
-    // room = new Room(roomDTO);
-    // em.persist(room);
-    // return Result.success(room.toDTO());
-    // }
-
-    // if (room.isAvailable()) {
-    // throw new ASException(ASError.ACTIVE_ROOM);
-    // }
-
-    // room.setAvailable(true);
-    // room.setNumber(roomDTO.getNumber());
-    // room.setOccupied(roomDTO.isOccupied());
-    // room.setPeopleNumber(roomDTO.getPeopleNumber());
-    // room.setSingleBed(roomDTO.isSingleBed());
-    // em.persist(room);
-    // return Result.success(room.toDTO());
-
-    // }
-
     @Override
-    public Result<RoomDTO> readRoom(int roomId) {
+    public RoomDTO readRoom(long roomId) {
         Room room = this.em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
         if (room == null)
             throw new RoomASException(ASError.ROOM_NOT_FOUND);
 
-        return Result.success(RoomMapper.toDTO(room));
+        return RoomMapper.INSTANCE.toDTO(room);
 
     }
-
-    // @Override
-    // public Result<RoomDTO> readRoomByNumber(int number) {
-    // Room room = this.em.find(Room.class, number, LockModeType.NONE);
-    // if (room == null)
-    // throw new RoomASException(ASError.ROOM_NOT_FOUND);
-
-    // return Result.success(room.toDTO());
-    // }
-
-    // @Override
-    // public Result<Void> deleteRoom(int id) {
-
-    // Room room = this.em.find(Room.class, id);
-
-    // if (room == null) {
-    // throw new RoomASException(ASError.ROOM_NOT_FOUND);
-    // }
-
-    // if (!room.isAvailable()) {
-    // throw new RoomASException(ASError.NON_ACTIVE_ROOM);
-    // }
-
-    // room.setAvailable(false);
-
-    // return Result.success(null);
-
-    // }
 
     @Override
     public List<RoomParamsDTO> readRooms(String hotelName, String countryName) {
@@ -114,14 +54,4 @@ public class RoomASImp implements RoomAS {
                 .toList();
     }
 
-    // private void isValid(RoomDTO room) throws ASException {
-    //     if (room == null)
-    //         throw new RoomASException(ASError.NON_EXISTENT_ROOM);
-
-    //     if (room.getNumber() < 0)
-    //         throw new RoomASException(ASError.INVALID_ROOM_NUMBER);
-
-    //     if (room.getPeopleNumber() <= 0)
-    //         throw new RoomASException(ASError.INVALID_PEOPLE_NUMBER);
-    // }
 }
