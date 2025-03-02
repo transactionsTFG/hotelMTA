@@ -3,10 +3,11 @@ package business.booking;
 import common.dto.result.Result;
 import common.dto.soap.request.MakeBookingRequestSOAP;
 import common.dto.soap.request.ModifyBookingRequestSOAP;
+import common.dto.soap.request.UserSOAP;
 
 public interface BookingAS {
 
-    public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP);
+    public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP, UserSOAP userSOAP);
 
     public Result<BookingTOA> updateBooking(ModifyBookingRequestSOAP bookingSOAP);
 

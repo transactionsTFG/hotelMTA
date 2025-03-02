@@ -10,6 +10,7 @@ import common.consts.ASError;
 import common.dto.result.Result;
 import common.dto.soap.request.MakeBookingRequestSOAP;
 import common.dto.soap.request.ModifyBookingRequestSOAP;
+import common.dto.soap.request.UserSOAP;
 import common.exception.BookingASException;
 import common.mapper.BookingMapper;
 import common.mapper.CustomerMapper;
@@ -36,14 +37,22 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP) {
+    public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP, UserSOAP userSOAP) {
 
         SOAPValidator.makeBookingRequestIsValid(bookingSOAP);
 
         Customer customer = em.find(Customer.class, bookingSOAP.getCustomerId());
 
         if (customer == null) {
-            throw new BookingASException(ASError.NON_EXISTENT_CUSTOMER);
+            customer = new Customer();
+            customer.setName(userSOAP.getName());
+            customer.setEmail(userSOAP.getEmail());
+            customer.setPhone(userSOAP.getPhone());
+            customer.setDni(userSOAP.getPassport());
+            customer.setAvailable(true);
+            em.persist(customer);
+            em.flush();
+            bookingSOAP.setCustomerId(customer.getId());
         }
 
         if (!customer.isAvailable()) {

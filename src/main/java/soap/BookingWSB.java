@@ -11,6 +11,7 @@ import common.consts.WebMethodConsts;
 import common.dto.result.Result;
 import common.dto.soap.request.MakeBookingRequestSOAP;
 import common.dto.soap.request.ModifyBookingRequestSOAP;
+import common.dto.soap.request.UserSOAP;
 import common.dto.soap.response.BookingSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.BookingMapper;
@@ -29,8 +30,8 @@ public class BookingWSB {
 
     @WebMethod(operationName = WebMethodConsts.MAKE_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<BookingSOAP> makeBooking(@WebParam(name = "booking") MakeBookingRequestSOAP bookingSOAP) {
-        final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingSOAP);
+    public SoapResponse<BookingSOAP> makeBooking(@WebParam(name = "booking") MakeBookingRequestSOAP bookingSOAP, @WebParam(name = "user") UserSOAP userSOAP) {
+        final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingSOAP, userSOAP);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
                 BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
                 booking.isSuccess());

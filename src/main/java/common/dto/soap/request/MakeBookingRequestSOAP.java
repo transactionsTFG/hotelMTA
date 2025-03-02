@@ -35,4 +35,7 @@ public class MakeBookingRequestSOAP {
     @XmlElement(name = "roomId")
     private List<Long> roomIds;
 
+    @XmlElement
+    private UserSOAP user;
+
 }
