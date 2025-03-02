@@ -30,17 +30,4 @@ public class BookingSOAP {
     @XmlElement
     private double totalPrice;
 
-    // public static BookingSOAP toSOAP(BookingDTO bookingDTO) {
-    //     BookingSOAP bookingSOAP = new BookingSOAP();
-    //     bookingSOAP.setId(bookingDTO.getId());
-    //     bookingSOAP.setCustomerId(bookingDTO.getCustomerId());
-    //     bookingSOAP.setDate(bookingDTO.getDate());
-    //     bookingSOAP.setNumberOfNights(bookingDTO.getNumberOfNights());
-    //     bookingSOAP.setPeopleNumber(bookingDTO.getPeopleNumber());
-    //     bookingSOAP.setId(bookingDTO.getId());
-    //     bookingSOAP.setWithBreakfast(bookingDTO.isWithBreakfast());
-    //     bookingSOAP.setAvailable(bookingDTO.isActive());
-    //     return bookingSOAP;
-    // }
-
 }

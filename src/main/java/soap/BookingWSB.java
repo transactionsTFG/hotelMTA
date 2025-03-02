@@ -33,7 +33,6 @@ public class BookingWSB {
         final Result<BookingTOA> booking = this.bookingAS.createBooking(bookingSOAP);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
                 BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
-                // BookingSOAP.toSOAP(booking.getData().getBooking()),
                 booking.isSuccess());
     }
 
@@ -43,7 +42,6 @@ public class BookingWSB {
         final Result<BookingTOA> booking = this.bookingAS.updateBooking(bookingSOAP);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
                 BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
-                // BookingSOAP.toSOAP(booking.getData().getBooking()),
                 booking.isSuccess());
 
     }
@@ -68,7 +66,6 @@ public class BookingWSB {
         final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
                 BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
-                // BookingSOAP.toSOAP(booking.getData().getBooking()),
                 booking.isSuccess());
 
     }

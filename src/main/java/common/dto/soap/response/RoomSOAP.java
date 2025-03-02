@@ -32,14 +32,4 @@ public class RoomSOAP {
     @XmlElement
     private double dailyPrice;
 
-    // public static RoomSOAP toSOAP(RoomDTO roomDTO) {
-    //     RoomSOAP roomSOAP = new RoomSOAP();
-    //     roomSOAP.setId(roomDTO.getId());
-    //     roomSOAP.setNumber(roomDTO.getNumber());
-    //     roomSOAP.setOccupied(roomDTO.isOccupied());
-    //     roomSOAP.setSingleBed(roomDTO.isSingleBed());
-    //     roomSOAP.setPeopleNumber(roomDTO.getPeopleNumber());
-    //     roomSOAP.setAvailable(roomDTO.isAvailable());
-    //     return roomSOAP;
-    // }
 }
