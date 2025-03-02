@@ -306,7 +306,7 @@ public class BookingASImp implements BookingAS {
     @Override
     public Result<BookingTOA> readBooking(long id) {
 
-        Booking booking = em.find(Booking.class, id);
+        Booking booking = em.find(Booking.class, id, LockModeType.OPTIMISTIC);
 
         if (booking == null) {
             throw new BookingASException(ASError.BOOKING_NOT_FOUND);
