@@ -41,18 +41,20 @@ public class BookingASImp implements BookingAS {
 
         SOAPValidator.makeBookingRequestIsValid(bookingSOAP);
 
-        Customer customer = em.find(Customer.class, bookingSOAP.getCustomerId());
+        TypedQuery<Customer> customerQuery = em.createNamedQuery("business.customer.getByDni", Customer.class);
+        customerQuery.setParameter("dni", userSOAP.getDni());
+
+        Customer customer = customerQuery.getResultList().isEmpty() ? null: customerQuery.getResultList().get(0);
 
         if (customer == null) {
             customer = new Customer();
             customer.setName(userSOAP.getName());
             customer.setEmail(userSOAP.getEmail());
             customer.setPhone(userSOAP.getPhone());
-            customer.setDni(userSOAP.getPassport());
+            customer.setDni(userSOAP.getDni());
             customer.setAvailable(true);
             em.persist(customer);
             em.flush();
-            bookingSOAP.setCustomerId(customer.getId());
         }
 
         if (!customer.isAvailable()) {
@@ -89,7 +91,6 @@ public class BookingASImp implements BookingAS {
                         b.getEndDate());
 
             });
-
 
             BookingLine bookingLine = new BookingLine();
             bookingLine.setStartDate(bookingSOAP.getStartDate());
@@ -207,7 +208,6 @@ public class BookingASImp implements BookingAS {
                     }
                 });
             }
-
 
             totalPrice += bookingSOAP.getNumberOfNights() * room.getDailyPrice();
         }
