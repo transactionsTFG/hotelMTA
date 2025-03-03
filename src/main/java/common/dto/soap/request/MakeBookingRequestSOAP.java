@@ -31,7 +31,7 @@ public class MakeBookingRequestSOAP {
     @XmlElement
     private int peopleNumber;
     @XmlElement
-    private long customerId;
+    private String customerDNI;
     @XmlElement(name = "roomId")
     private List<Long> roomIds;
 

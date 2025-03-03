@@ -1,5 +1,6 @@
 package business.customer;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,6 +43,7 @@ public class Customer implements Serializable {
     
     private String phone;
     
+    @Column(unique = true)
     private String dni;
     
     private boolean available;

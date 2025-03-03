@@ -20,7 +20,7 @@ public class UserSOAP {
     private String email;
 
     @XmlElement
-    private String passport;
+    private String dni;
 
     @XmlElement
     private String phone;

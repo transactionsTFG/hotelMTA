@@ -11,8 +11,8 @@ public class SOAPValidator {
             throw new BookingASException(ASError.NON_EXISTENT_BOOKING);
         }
 
-        if (booking.getCustomerId() <= 0) {
-            throw new BookingASException(ASError.INVALID_CUSTOMER_ID);
+        if (!Validator.isDni(booking.getCustomerDNI())) {
+            throw new BookingASException(ASError.INVALID_DNI);
         }
 
         if (booking.getPeopleNumber() <= 0) {
