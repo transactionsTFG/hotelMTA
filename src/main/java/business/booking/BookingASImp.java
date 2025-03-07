@@ -141,7 +141,7 @@ public class BookingASImp implements BookingAS {
         }
 
         List<BookingLine> bookingLines = booking.getBookingLines();
-        double totalPrice = booking.getTotalPrice();
+        double totalPrice = 0;
         for (Long roomId : bookingSOAP.getRoomIds()) {
             Room room = em.find(Room.class, roomId, LockModeType.OPTIMISTIC);
 
