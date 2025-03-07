@@ -63,6 +63,7 @@ public class BookingWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_BOOKING)
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> searchBooking(@WebParam(name = "bookingID") long bookingID) {
         final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
