@@ -30,12 +30,6 @@ public class MakeBookingRequestSOAP {
     private boolean withBreakfast;
     @XmlElement
     private int peopleNumber;
-    @XmlElement
-    private String customerDNI;
     @XmlElement(name = "roomId")
     private List<Long> roomIds;
-
-    @XmlElement
-    private UserSOAP user;
-
 }

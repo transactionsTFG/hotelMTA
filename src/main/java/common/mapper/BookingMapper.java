@@ -27,4 +27,14 @@ public interface BookingMapper {
                 .totalPrice(bookingDTO.getTotalPrice())
                 .build();
     }
+
+    public static BookingSOAP fromSOAPToEntity(BookingDTO b) {
+        return BookingSOAP.builder()
+                .id(b.getId())
+                .withBreakfast(b.isWithBreakfast())
+                .peopleNumber(b.getPeopleNumber())
+                .available(b.isAvailable())
+                .totalPrice(b.getPeopleNumber())
+                .build();
+    }
 }

@@ -127,7 +127,7 @@ public class BookingASImp implements BookingAS {
     }
 
     @Override
-    public Result<BookingTOA> updateBooking(ModifyBookingRequestSOAP bookingSOAP) {
+    public Result<BookingDTO> updateBooking(ModifyBookingRequestSOAP bookingSOAP) {
         SOAPValidator.modifyBookingRequestIsValid(bookingSOAP);
 
         Booking booking = em.find(Booking.class, bookingSOAP.getId());
@@ -138,16 +138,6 @@ public class BookingASImp implements BookingAS {
 
         if (bookingSOAP.getRoomIds() == null || bookingSOAP.getRoomIds().isEmpty()) {
             throw new BookingASException(ASError.INVALID_ROOM_LIST);
-        }
-
-        Customer customer = em.find(Customer.class, bookingSOAP.getCustomerId());
-
-        if (customer == null) {
-            throw new BookingASException(ASError.NON_EXISTENT_CUSTOMER);
-        }
-
-        if (!customer.isAvailable()) {
-            throw new BookingASException(ASError.NON_ACTIVE_CUSTOMER);
         }
 
         List<BookingLine> bookingLines = booking.getBookingLines();
@@ -214,16 +204,15 @@ public class BookingASImp implements BookingAS {
 
         booking.setWithBreakfast(bookingSOAP.isWithBreakfast());
         booking.setAvailable(true);
-        booking.setCustomer(customer);
         booking.setBookingLines(bookingLines);
         booking.setPeopleNumber(bookingSOAP.getPeopleNumber());
         booking.setTotalPrice(totalPrice);
 
         em.flush();
-        return Result.success(
-                new BookingTOA(BookingMapper.toDTO(booking),
-                        CustomerMapper.toDTO(customer),
-                        bookingLines.stream().map(b -> RoomMapper.INSTANCE.toDTO(b.getRoom())).toList()));
+        return Result.success(new BookingDTO(booking.getId(), booking.isWithBreakfast(), booking.getPeopleNumber(),
+                booking.getCustomer().getId(),
+                booking.isAvailable(), 
+                booking.getTotalPrice()));
 
     }
 

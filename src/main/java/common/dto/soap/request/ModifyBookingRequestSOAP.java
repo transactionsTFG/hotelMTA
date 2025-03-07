@@ -29,8 +29,6 @@ public class ModifyBookingRequestSOAP {
     private boolean withBreakfast;
     @XmlElement
     private int peopleNumber;
-    @XmlElement
-    private long customerId;
     @XmlElement(name = "roomId")
     private List<Long> roomIds;
 }

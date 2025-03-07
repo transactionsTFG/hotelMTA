@@ -6,6 +6,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import business.booking.BookingAS;
+import business.booking.BookingDTO;
 import business.booking.BookingTOA;
 import common.consts.WebMethodConsts;
 import common.dto.result.Result;
@@ -40,9 +41,9 @@ public class BookingWSB {
     @WebMethod(operationName = WebMethodConsts.MODIFY_BOOKING)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> modifyBooking(@WebParam(name = "booking") ModifyBookingRequestSOAP bookingSOAP) {
-        final Result<BookingTOA> booking = this.bookingAS.updateBooking(bookingSOAP);
+        final Result<BookingDTO> booking = this.bookingAS.updateBooking(bookingSOAP);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),
-                BookingMapper.fromDTOToSOAP(booking.getData().getBooking()),
+                BookingMapper.fromDTOToSOAP(booking.getData()),
                 booking.isSuccess());
 
     }
@@ -62,7 +63,6 @@ public class BookingWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_BOOKING)
-    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<BookingSOAP> searchBooking(@WebParam(name = "bookingID") long bookingID) {
         final Result<BookingTOA> booking = this.bookingAS.readBooking(bookingID);
         return SoapResponseMapper.toSoapResponse(booking.getMessage(),

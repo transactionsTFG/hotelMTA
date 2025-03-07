@@ -9,7 +9,7 @@ public interface BookingAS {
 
     public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP, UserSOAP userSOAP);
 
-    public Result<BookingTOA> updateBooking(ModifyBookingRequestSOAP bookingSOAP);
+    public Result<BookingDTO> updateBooking(ModifyBookingRequestSOAP bookingSOAP);
 
     public Result<Double> deleteBooking(long id);
 
