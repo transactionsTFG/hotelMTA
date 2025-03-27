@@ -17,6 +17,8 @@ import common.mapper.CustomerMapper;
 import common.mapper.RoomMapper;
 import common.validators.DateValidator;
 import common.validators.SOAPValidator;
+import javax.transaction.Transaction;
+import weblogic.transaction.TxHelper;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -38,6 +40,16 @@ public class BookingASImp implements BookingAS {
 
     @Override
     public Result<BookingTOA> createBooking(MakeBookingRequestSOAP bookingSOAP, UserSOAP userSOAP) {
+
+        try {
+            Transaction tx = TxHelper.getTransactionManager().getTransaction();
+
+            if (tx != null) {
+                System.out.println("Transaction toString(): " + tx.toString());
+            }
+        } catch (Exception e) {
+
+        }
 
         SOAPValidator.makeBookingRequestIsValid(bookingSOAP);
 
