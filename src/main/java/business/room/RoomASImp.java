@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
 
+import business.booking.Booking;
 import common.consts.ASError;
 import common.exception.RoomASException;
 import common.mapper.RoomMapper;
@@ -52,6 +53,19 @@ public class RoomASImp implements RoomAS {
                         result[1] != null ? (String) result[1] : null,
                         result[2] != null ? (String) result[2] : null))
                 .toList();
+    }
+
+    @Override
+    public List<RoomDTO> readRoomsByBooking(long bookingID) {
+        Booking booking = this.em.find(Booking.class, bookingID, LockModeType.OPTIMISTIC);
+
+        if (booking == null)
+            throw new RoomASException(ASError.BOOKING_NOT_FOUND);
+
+        if (!booking.isAvailable())
+            throw new RoomASException(ASError.NON_ACTIVE_BOOKING);
+
+        return booking.getBookingLines().stream().map(b -> RoomMapper.INSTANCE.toDTO(b.getRoom())).toList();
     }
 
 }

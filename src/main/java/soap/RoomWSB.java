@@ -4,15 +4,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import business.room.RoomAS;
 import business.room.RoomDTO;
 import business.room.RoomParamsDTO;
 import common.consts.WebMethodConsts;
-import common.dto.result.Result;
-import common.dto.soap.response.SoapResponse;
-import common.mapper.SoapResponseMapper;
 
 @WebService(serviceName = "RoomWSB")
 public class RoomWSB {
@@ -32,6 +30,11 @@ public class RoomWSB {
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOMS)
     public List<RoomParamsDTO> searchRooms(final String hotelName, final String countryName) {
         return this.roomAS.readRooms(hotelName, countryName);
+    }
+
+    @WebMethod(operationName = WebMethodConsts.SEARCH_ROOMS_BY_BOOKING)
+    public List<RoomDTO> searchRoomsByBooking(@WebParam(name = "bookingID") long bookingID) {
+        return this.roomAS.readRoomsByBooking(bookingID);
     }
 
 }
