@@ -7,6 +7,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import business.bookingline.BookingLineDTO;
 import business.room.RoomAS;
 import business.room.RoomDTO;
 import business.room.RoomParamsDTO;
@@ -33,7 +34,7 @@ public class RoomWSB {
     }
 
     @WebMethod(operationName = WebMethodConsts.SEARCH_ROOMS_BY_BOOKING)
-    public List<RoomDTO> searchRoomsByBooking(@WebParam(name = "bookingID") long bookingID) {
+    public List<BookingLineDTO> searchRoomsByBooking(@WebParam(name = "bookingID") long bookingID) {
         return this.roomAS.readRoomsByBooking(bookingID);
     }
 

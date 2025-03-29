@@ -9,8 +9,12 @@ import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
 
 import business.booking.Booking;
+import business.booking.BookingDTO;
+import business.bookingline.BookingLineDTO;
 import common.consts.ASError;
 import common.exception.RoomASException;
+import common.mapper.BookingLineMapper;
+import common.mapper.BookingMapper;
 import common.mapper.RoomMapper;
 
 @Stateless
@@ -56,7 +60,7 @@ public class RoomASImp implements RoomAS {
     }
 
     @Override
-    public List<RoomDTO> readRoomsByBooking(long bookingID) {
+    public List<BookingLineDTO> readRoomsByBooking(long bookingID) {
         Booking booking = this.em.find(Booking.class, bookingID, LockModeType.OPTIMISTIC);
 
         if (booking == null)
@@ -65,7 +69,8 @@ public class RoomASImp implements RoomAS {
         if (!booking.isAvailable())
             throw new RoomASException(ASError.NON_ACTIVE_BOOKING);
 
-        return booking.getBookingLines().stream().map(b -> RoomMapper.INSTANCE.toDTO(b.getRoom())).toList();
+        return booking.getBookingLines().stream().map(b -> BookingLineMapper.INSTANCE.toDto(b,
+                RoomMapper.INSTANCE.toDTO(b.getRoom()), BookingMapper.toDTO(b.getBooking()))).toList();
     }
 
 }
