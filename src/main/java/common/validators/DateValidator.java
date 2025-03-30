@@ -10,7 +10,7 @@ import common.exception.BookingASException;
 public class DateValidator {
     public static void validateDates(String bsStartDateString, String bsEndDateString, String blStartDateString,
             String blEndDateString) throws BookingASException {
-        final String pattern = "dd/MM/yyyy";
+        final String pattern = "yyyy-MM-dd";
         try {
             Date bsStartDate = new SimpleDateFormat(pattern).parse(bsStartDateString);
             Date bsEndDate = new SimpleDateFormat(pattern).parse(bsEndDateString);
